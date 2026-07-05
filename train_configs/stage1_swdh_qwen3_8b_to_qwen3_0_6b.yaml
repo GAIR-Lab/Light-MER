@@ -1,0 +1,128 @@
+## Stage1 SWD-H: Qwen3-8B teacher -> Qwen3-0.6B student.
+## Public template. Override model.teacher.ckpt with your trained teacher checkpoint.
+
+model:
+  arch: affectgpt
+  model_type: pretrain_vicuna
+
+  frozen_video_proj: False
+  frozen_video_Qformer: False
+  frozen_audio_Qformer: False
+  frozen_audio_proj: False
+  frozen_multi_Qformer: False
+  frozen_multi_llama_proj: False
+  frozen_llm: False
+
+  multi_fusion_type: attention
+  video_fusion_type: attention
+  audio_fusion_type: attention
+  image_fusion_type: mean
+
+  ckpt: ""
+  ckpt_2: ""
+
+  llama_model: "Qwen3_0.6B"
+  acoustic_encoder: "HUBERT_BASE"
+  visual_encoder: "CLIP_VIT_BASE"
+
+  teacher:
+    llama_model: "Qwen3"
+    visual_encoder: "CLIP_VIT_LARGE"
+    acoustic_encoder: "HUBERT_LARGE"
+    ckpt: "checkpoints/qwen3_8b_teacher.pth"
+
+    use_swd: True
+    swd_n_projections: 200
+    swd_p: 1
+
+    ot_weight: 0.5
+    ot_ramp_steps: 10000
+    ot_epsilon: 0.1
+    ot_common_dim: 256
+    ot_num_iters: 20
+
+    kl_weight: 0.0
+    kl_temperature: 2.0
+
+  num_audio_query_token: 1
+  num_video_query_token: 1
+  num_multi_query_token: 1
+  num_image_query_token: 1
+  max_length: 1024
+
+  vis_processor:
+    train:
+      name: "alpro_video_train"
+      n_frms: 8
+      image_size: 224
+  text_processor:
+    train:
+      name: "blip_caption"
+  img_processor:
+    train:
+      name: "blip2_image_train"
+      image_size: 224
+
+datasets:
+  mercaptionplus:
+    data_type: video
+    face_or_frame: "multiface_audio_face_text"
+    label_type: "hybird"
+
+run:
+  task: video_text_pretrain
+
+  lr_sched: "linear_warmup_cosine_lr"
+  init_lr: 8e-5
+  min_lr: 8e-6
+  warmup_lr: 8e-7
+  weight_decay: 0.01
+
+  max_epoch: 60
+  iters_per_epoch: 5000
+  warmup_steps: 8000
+
+  batch_size_train: 3
+  batch_size_eval: 3
+  accum_grad_iters: 8
+
+  seed: 43
+  num_workers: 4
+
+  amp: True
+  resume_ckpt_path: null
+
+  evaluate: False
+  train_splits: ["train"]
+
+  device: "cuda"
+  world_size: 1
+  dist_url: "env://"
+  distributed: False
+
+  output_dir: "output/stage1_swdh_qwen3_8b_to_qwen3_0_6b"
+
+inference:
+  task: video_text_pretrain
+
+  vis_processor:
+    train:
+      name: "alpro_video_eval"
+      n_frms: 8
+      image_size: 224
+  text_processor:
+    train:
+      name: "blip_caption"
+  img_processor:
+    train:
+      name: "blip2_image_eval"
+      image_size: 224
+
+  face_or_frame: "xxx"
+  base_root: "output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/results"
+  ckpt_root: xxx
+  ckpt_name: xxx
+  test_epoch: xxx
+  test_epochs: xxx-xxx
+  skip_epoch: 1
+  gpu: 0
