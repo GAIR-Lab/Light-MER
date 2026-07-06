@@ -22,15 +22,13 @@ This release contains the Stage 1 code used to train, distill, infer, and evalua
 
 ## Release Status
 
-| Paper component | Status | Notes |
+| Component | Status | Notes |
 |---|---|---|
-| Qwen3-8B teacher training | Released | AffectGPT-style teacher with Qwen3-8B, CLIP-ViT-Large, and HuBERT-Large |
-| Stage 1 SWD-H distillation | Released | Hidden-state Sliced Wasserstein distillation into Qwen3-0.6B |
-| Stage 1 inference | Released | Direct checkpoint inference over supported MER benchmarks |
-| Stage 1 evaluation | Released | vLLM label extraction and Emotion Wheel metrics |
-| Stage 2 M-GRPO refinement | Coming Soon | No GRPO/RLHF/reward/policy-optimization code is included yet |
-| Model weights | Not included | Prepare locally or download from official model providers |
-| Datasets | Not included | Prepare processed MER/MELD/IEMOCAP/CMU datasets locally |
+| Stage 1 | Released | SWD-H distillation code for Qwen3-8B teacher to Qwen3-0.6B student |
+| Stage 2 | Coming Soon | M-GRPO refinement will be released in a future update |
+| Evaluation | Released | Inference scripts, label extraction, and Emotion Wheel metrics |
+| Model Checkpoint | Coming Soon | Public checkpoints will be added after release approval |
+| Codex Skill | Coming Soon | A lightweight Codex helper for running Light-MER workflows |
 
 ## Method Overview
 
