@@ -8,11 +8,11 @@ Official implementation for the paper:
   <img src="assets/light-mer-overview.png" alt="Light-MER Stage 1 overview: a large model becomes a small but strong student, and a large teacher teaches a small student through SWD-H." width="82%">
 </p>
 
-> Current release: Stage 1 SWD-H distillation for a Qwen3-8B teacher and a Qwen3-0.6B student. Stage 2 M-GRPO refinement is coming soon in this repository.
+> Light-MER codebase for Stage 1 SWD-H distillation and Stage 2 M-GRPO refinement.
 
 Light-MER revisits generative multimodal emotion recognition (MER) from an efficiency perspective. Instead of deploying a large 7B/8B multimodal emotion language model, Light-MER transfers the multimodal emotion reasoning ability of a strong teacher into a sub-1B deployment model.
 
-This release contains the Stage 1 code used to train, distill, infer, and evaluate the SWD-H student. It does not include Stage 2 M-GRPO, GRPO/RLHF reward code, policy optimization scripts, model weights, datasets, or private experiment logs.
+This repository hosts the Light-MER open-source release, covering the Stage 1 SWD-H distillation pipeline and the Stage 2 M-GRPO refinement track. Stage 1 is available now, and future updates will expand the same codebase according to the roadmap below.
 
 ## News
 
@@ -75,7 +75,7 @@ When `use_swd=True`, the implementation projects teacher hidden states from 4096
 
 ## Paper Results
 
-The full Light-MER paper reports the following mean scores over nine benchmarks. Stage 2 M-GRPO is part of the paper but not yet released in this repository.
+The full Light-MER paper reports the following mean scores over nine benchmarks. Stage 2 M-GRPO is tracked in the release roadmap.
 
 | Model / stage | Params | Mean score | Release |
 |---|---:|---:|---|
