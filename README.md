@@ -1,35 +1,95 @@
-# Official Implementation of AffectGPT SWD-H
+# Light-MER
 
-> Stage 1 code release for Qwen3-8B to Qwen3-0.6B multimodal emotion distillation.
+Official implementation for the paper:
 
-This repository is the public codebase for the AffectGPT SWD-H project. The current release contains the Stage 1 SWD-H distillation pipeline. Stage 2 will be released in a future update.
+**Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?**
+
+> Current release: Stage 1 SWD-H distillation for a Qwen3-8B teacher and a Qwen3-0.6B student. Stage 2 M-GRPO refinement is coming soon in this repository.
+
+Light-MER revisits generative multimodal emotion recognition (MER) from an efficiency perspective. Instead of deploying a large 7B/8B multimodal emotion language model, Light-MER transfers the multimodal emotion reasoning ability of a strong teacher into a sub-1B deployment model.
+
+This release contains the Stage 1 code used to train, distill, infer, and evaluate the SWD-H student. It does not include Stage 2 M-GRPO, GRPO/RLHF reward code, policy optimization scripts, model weights, datasets, or private experiment logs.
 
 ## News
 
-- [2026-07-05] Stage 1 SWD-H training, inference, and evaluation code is released.
-- [Coming Soon] Stage 2 code and instructions will be released here.
+- [2026-07-06] README and public config aligned with the Light-MER paper; core model source is included in the release.
+- [2026-07-05] Stage 1 SWD-H training, inference, and evaluation code released.
+- [Coming Soon] Stage 2 M-GRPO refinement code and instructions.
 
 ## Release Status
 
-| Component | Status | Notes |
+| Paper component | Status | Notes |
 |---|---|---|
-| Stage 1 teacher training | Released | Qwen3-8B AffectGPT teacher config and script |
-| Stage 1 SWD-H distillation | Released | Qwen3-8B teacher to Qwen3-0.6B student |
-| Stage 1 inference | Released | Multi-dataset zero-shot inference script |
+| Qwen3-8B teacher training | Released | AffectGPT-style teacher with Qwen3-8B, CLIP-ViT-Large, and HuBERT-Large |
+| Stage 1 SWD-H distillation | Released | Hidden-state Sliced Wasserstein distillation into Qwen3-0.6B |
+| Stage 1 inference | Released | Direct checkpoint inference over supported MER benchmarks |
 | Stage 1 evaluation | Released | vLLM label extraction and Emotion Wheel metrics |
-| Stage 2 | Coming Soon | Future update in this same repository |
+| Stage 2 M-GRPO refinement | Coming Soon | No GRPO/RLHF/reward/policy-optimization code is included yet |
 | Model weights | Not included | Prepare locally or download from official model providers |
 | Datasets | Not included | Prepare processed MER/MELD/IEMOCAP/CMU datasets locally |
 
-## Overview
+## Method Overview
 
-Stage 1 distills a Qwen3-8B AffectGPT teacher into a Qwen3-0.6B student with hidden-state Sliced Wasserstein Distance (SWD-H).
+The released Stage 1 pipeline follows the first part of Light-MER:
 
-- Teacher: Qwen3-8B AffectGPT
-- Student: Qwen3-0.6B AffectGPT
-- Visual encoders: CLIP ViT-Large for teacher, CLIP ViT-Base for student
-- Audio encoders: HuBERT-Large for teacher, HuBERT-Base for student
-- Distillation: SWD-H on answer-token hidden states
+1. Train a large teacher multimodal emotion language model.
+2. Freeze the teacher during student distillation.
+3. Train a Qwen3-0.6B student with standard autoregressive cross-entropy.
+4. Add SWD-H to align teacher and student last-layer hidden-state distributions at answer-token positions.
+
+In the paper, output distributions from the 8B teacher are highly peaked, so logit-level KL supervision provides limited signal beyond the top token. SWD-H instead aligns hidden-state geometry, treating answer-token hidden states as empirical distributions and computing Sliced Wasserstein Distance over random one-dimensional projections.
+
+## Model Configuration
+
+| Role | Language decoder | Visual encoder | Audio encoder |
+|---|---|---|---|
+| Teacher | Qwen3-8B | CLIP-ViT-Large-Patch14 | HuBERT-Large |
+| Student | Qwen3-0.6B | CLIP-ViT-Base-Patch16 | HuBERT-Base |
+
+The paper uses face-cropped visual inputs because facial regions carry salient affective cues. The current configs expose the same multimodal data path through `face_or_frame: "multiface_audio_face_text"`.
+
+## SWD-H Settings
+
+Canonical config:
+
+```text
+train_configs/stage1_swdh_qwen3_8b_to_qwen3_0_6b.yaml
+```
+
+Main SWD-H settings:
+
+```yaml
+model:
+  teacher:
+    use_swd: True
+    swd_n_projections: 100
+    swd_p: 2
+    ot_weight: 1.0
+    ot_ramp_steps: 5000
+    kl_weight: 0.0
+```
+
+When `use_swd=True`, the implementation projects teacher hidden states from 4096 to the student hidden size 1024 with a frozen orthogonal teacher projection, and compares them with the student 1024-dimensional hidden states. The SWD-H mask is aligned with the cross-entropy answer-token mask.
+
+## Paper Results
+
+The full Light-MER paper reports the following mean scores over nine benchmarks. Stage 2 M-GRPO is part of the paper but not yet released in this repository.
+
+| Model / stage | Params | Mean score | Release |
+|---|---:|---:|---|
+| AffectGPT original | 7B | 69.77 | Baseline |
+| Qwen3-8B teacher | 8B | 73.93 | Teacher training released |
+| Student without SWD-H | 0.6B | 70.61 | Internal ablation |
+| Student + SWD-H | 0.6B | 74.16 | Released |
+| Student + SWD-H + M-GRPO | 0.6B | 74.61 | Coming Soon |
+
+Efficiency reported in the paper:
+
+| Model | Total params | Peak memory | Compression | Descriptive latency |
+|---|---:|---:|---:|---:|
+| Teacher Qwen3-8B | 9.00B | 20.04 GB | - | 6.138 s/sample |
+| Student SWD-H | 854.93M | 2.54 GB | 11.0x | 4.621 s/sample |
+| Student M-GRPO | 854.93M | 2.54 GB | 11.0x | 3.105 s/sample |
 
 ## Directory Layout
 
@@ -49,6 +109,10 @@ Stage 1 distills a Qwen3-8B AffectGPT teacher into a Qwen3-0.6B student with hid
 │   ├── eval_stage1_swdh.py
 │   └── eval_stage1_swdh.sh
 ├── my_affectgpt/
+│   ├── models/
+│   ├── datasets/
+│   ├── runners/
+│   └── tasks/
 ├── toolkit/
 ├── emotion_wheel/
 ├── requirements.txt
@@ -72,7 +136,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The original experiments used one H100 80GB GPU. Smaller GPUs may require reducing batch size, sequence length, or enabling additional memory optimizations.
+The original Stage 1 experiments used an H100 80GB GPU. Smaller GPUs may require reducing batch size, sequence length, or enabling additional memory optimizations.
 
 ## Prepare Models
 
@@ -139,25 +203,6 @@ TEACHER_CKPT=checkpoints/qwen3_8b_teacher.pth \
 bash scripts/train_stage1_swdh.sh
 ```
 
-Canonical config:
-
-```text
-train_configs/stage1_swdh_qwen3_8b_to_qwen3_0_6b.yaml
-```
-
-Main SWD-H settings:
-
-```yaml
-model:
-  teacher:
-    use_swd: True
-    swd_n_projections: 200
-    swd_p: 1
-    ot_weight: 0.5
-    ot_ramp_steps: 10000
-    kl_weight: 0.0
-```
-
 ### 3. Run Inference
 
 ```bash
@@ -197,8 +242,16 @@ python -u train.py \
 
 ## Citation
 
-Citation information will be updated once the associated paper or technical report is available.
+The paper is currently represented here by its title. Citation metadata will be updated after the public paper/arXiv/camera-ready version is available.
+
+```bibtex
+@misc{lightmer2026,
+  title = {Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?},
+  year = {2026},
+  note = {Code: https://github.com/kevinkke233-maker/Light-MER}
+}
+```
 
 ## Acknowledgement
 
-This codebase builds on AffectGPT-style multimodal instruction tuning and open-source components from the PyTorch, Hugging Face Transformers, vLLM, CLIP, HuBERT, and BLIP/LAVIS ecosystems.
+This codebase builds on AffectGPT-style multimodal instruction tuning and open-source components from the PyTorch, Hugging Face Transformers, vLLM, CLIP, HuBERT, BLIP/LAVIS, and ImageBind ecosystems.

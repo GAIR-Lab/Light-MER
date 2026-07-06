@@ -1,7 +1,8 @@
-# Open-Source Checklist
+# Open-Source Checklist for Light-MER Stage 1
 
 - [ ] Current code/config/scripts contain only Stage 1 SWD-H for Qwen3-8B teacher to Qwen3-0.6B student.
-- [ ] README may say "Stage 2 Coming Soon", but no Stage 2 code/config/scripts are included yet.
+- [ ] README may say "Stage 2 M-GRPO Coming Soon", but no Stage 2 code/config/scripts are included yet.
+- [ ] Core model source under `my_affectgpt/models/` is tracked by Git and not hidden by `.gitignore`.
 - [ ] No model weights or checkpoints are included.
 - [ ] No datasets or processed dataset artifacts are included.
 - [ ] No `.npz`, `.npy`, `.pth`, `.pt`, `.bin`, `.safetensors`, logs, outputs, plots, or result summaries are included.

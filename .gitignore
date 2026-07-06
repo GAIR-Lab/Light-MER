@@ -5,16 +5,16 @@ __pycache__/
 .venv/
 .env
 
-models/
-dataset/
-checkpoints/*.pth
-checkpoints/*.pt
-checkpoints/*.bin
-checkpoints/*.safetensors
+/models/
+/dataset/
+/checkpoints/*.pth
+/checkpoints/*.pt
+/checkpoints/*.bin
+/checkpoints/*.safetensors
 
-output/
-output_*/
-logs/
+/output/
+/output_*/
+/logs/
 *.out
 *.err
 *.log
@@ -29,5 +29,5 @@ logs/
 *.tar
 *.tar.gz
 
-wandb/
-runs/
+/wandb/
+/runs/

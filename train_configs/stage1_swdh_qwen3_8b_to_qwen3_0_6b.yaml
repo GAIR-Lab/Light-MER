@@ -32,11 +32,11 @@ model:
     ckpt: "checkpoints/qwen3_8b_teacher.pth"
 
     use_swd: True
-    swd_n_projections: 200
-    swd_p: 1
+    swd_n_projections: 100
+    swd_p: 2
 
-    ot_weight: 0.5
-    ot_ramp_steps: 10000
+    ot_weight: 1.0
+    ot_ramp_steps: 5000
     ot_epsilon: 0.1
     ot_common_dim: 256
     ot_num_iters: 20
