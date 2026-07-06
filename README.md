@@ -4,6 +4,10 @@ Official implementation for the paper:
 
 **Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?**
 
+<p align="center">
+  <img src="assets/light-mer-overview.svg" alt="Light-MER Stage 1 overview: a large model becomes a small but strong student, and a large teacher teaches a small student through SWD-H." width="100%">
+</p>
+
 > Current release: Stage 1 SWD-H distillation for a Qwen3-8B teacher and a Qwen3-0.6B student. Stage 2 M-GRPO refinement is coming soon in this repository.
 
 Light-MER revisits generative multimodal emotion recognition (MER) from an efficiency perspective. Instead of deploying a large 7B/8B multimodal emotion language model, Light-MER transfers the multimodal emotion reasoning ability of a strong teacher into a sub-1B deployment model.
