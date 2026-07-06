@@ -32,14 +32,11 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 
 ## 🧠 Method Overview
 
-The released Stage 1 pipeline follows the first part of Light-MER:
+Light-MER compresses a Qwen3-8B multimodal emotion teacher into a Qwen3-0.6B deployable student. Stage 1 uses SWD-H to align answer-token hidden-state geometry, while Stage 2 follows the M-GRPO refinement track for more concise and emotion-faithful generation.
 
-1. Train a large teacher multimodal emotion language model.
-2. Freeze the teacher during student distillation.
-3. Train a Qwen3-0.6B student with standard autoregressive cross-entropy.
-4. Add SWD-H to align teacher and student last-layer hidden-state distributions at answer-token positions.
-
-In the paper, output distributions from the 8B teacher are highly peaked, so logit-level KL supervision provides limited signal beyond the top token. SWD-H instead aligns hidden-state geometry, treating answer-token hidden states as empirical distributions and computing Sliced Wasserstein Distance over random one-dimensional projections.
+<p align="center">
+  <img src="assets/light-mer-model-overview.png" alt="Light-MER model overview showing SWD-H hidden-state distillation and M-GRPO refinement." width="96%">
+</p>
 
 ## 🧩 Model Configuration
 
