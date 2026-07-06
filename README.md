@@ -14,13 +14,13 @@ Light-MER revisits generative multimodal emotion recognition (MER) from an effic
 
 This repository hosts the Light-MER open-source release, covering the Stage 1 SWD-H distillation pipeline and the Stage 2 M-GRPO refinement track. Stage 1 is available now, and future updates will expand the same codebase according to the roadmap below.
 
-## News
+## 📰 News
 
-- [2026-07-06] README and public config aligned with the Light-MER paper; core model source is included in the release.
-- [2026-07-05] Stage 1 SWD-H training, inference, and evaluation code released.
-- [Coming Soon] Stage 2 M-GRPO refinement code and instructions.
+- [JULY 06, 2026] README and public config aligned with the Light-MER paper; core model source is included in the release.
+- [JULY 05, 2026] Stage 1 SWD-H training, inference, and evaluation code released.
+- [COMING SOON] Stage 2 M-GRPO refinement code and instructions.
 
-## Release Status
+## 🚦 Release Status
 
 | Component | Status | Notes |
 |---|---|---|
@@ -30,7 +30,7 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 | Model Checkpoint | Coming Soon | Public checkpoints will be added after release approval |
 | Codex Skill | Coming Soon | A lightweight Codex helper for running Light-MER workflows |
 
-## Method Overview
+## 🧠 Method Overview
 
 The released Stage 1 pipeline follows the first part of Light-MER:
 
@@ -41,7 +41,7 @@ The released Stage 1 pipeline follows the first part of Light-MER:
 
 In the paper, output distributions from the 8B teacher are highly peaked, so logit-level KL supervision provides limited signal beyond the top token. SWD-H instead aligns hidden-state geometry, treating answer-token hidden states as empirical distributions and computing Sliced Wasserstein Distance over random one-dimensional projections.
 
-## Model Configuration
+## 🧩 Model Configuration
 
 | Role | Language decoder | Visual encoder | Audio encoder |
 |---|---|---|---|
@@ -50,7 +50,7 @@ In the paper, output distributions from the 8B teacher are highly peaked, so log
 
 The paper uses face-cropped visual inputs because facial regions carry salient affective cues. The current configs expose the same multimodal data path through `face_or_frame: "multiface_audio_face_text"`.
 
-## SWD-H Settings
+## 📐 SWD-H Settings
 
 Canonical config:
 
@@ -73,27 +73,7 @@ model:
 
 When `use_swd=True`, the implementation projects teacher hidden states from 4096 to the student hidden size 1024 with a frozen orthogonal teacher projection, and compares them with the student 1024-dimensional hidden states. The SWD-H mask is aligned with the cross-entropy answer-token mask.
 
-## Paper Results
-
-The full Light-MER paper reports the following mean scores over nine benchmarks. Stage 2 M-GRPO is tracked in the release roadmap.
-
-| Model / stage | Params | Mean score | Release |
-|---|---:|---:|---|
-| AffectGPT original | 7B | 69.77 | Baseline |
-| Qwen3-8B teacher | 8B | 73.93 | Teacher training released |
-| Student without SWD-H | 0.6B | 70.61 | Internal ablation |
-| Student + SWD-H | 0.6B | 74.16 | Released |
-| Student + SWD-H + M-GRPO | 0.6B | 74.61 | Coming Soon |
-
-Efficiency reported in the paper:
-
-| Model | Total params | Peak memory | Compression | Descriptive latency |
-|---|---:|---:|---:|---:|
-| Teacher Qwen3-8B | 9.00B | 20.04 GB | - | 6.138 s/sample |
-| Student SWD-H | 854.93M | 2.54 GB | 11.0x | 4.621 s/sample |
-| Student M-GRPO | 854.93M | 2.54 GB | 11.0x | 3.105 s/sample |
-
-## Directory Layout
+## 📁 Directory Layout
 
 ```text
 .
@@ -121,7 +101,7 @@ Efficiency reported in the paper:
 └── environment.yml
 ```
 
-## Installation
+## ⚙️ Installation
 
 Create a conda environment:
 
@@ -140,7 +120,7 @@ pip install -r requirements.txt
 
 The original Stage 1 experiments used an H100 80GB GPU. Smaller GPUs may require reducing batch size, sequence length, or enabling additional memory optimizations.
 
-## Prepare Models
+## 🤖 Prepare Models
 
 Place or symlink pretrained models under `models/`, or set `SWDH_MODEL_ROOT`.
 
@@ -159,7 +139,7 @@ models/
 
 `Qwen2.5-7B-Instruct` is used by `eval_student_model.py` with vLLM to extract normalized emotion labels from generated text.
 
-## Prepare Data
+## 📦 Prepare Data
 
 Place processed datasets under `dataset/`, or set `SWDH_DATASET_ROOT`.
 
@@ -181,9 +161,9 @@ dataset/
 
 Stage 1 training uses MERCaptionPlus files in `mer2025-dataset`, especially `track2_train_mercaptionplus.csv`, `track3_train_mercaptionplus.csv`, `subtitle_chieng.csv`, plus audio/video/OpenFace features.
 
-## Getting Started
+## 🚀 Getting Started
 
-### 1. Train the Qwen3-8B Teacher
+### 🧑‍🏫 1. Train the Qwen3-8B Teacher
 
 Skip this step if you already have a compatible teacher checkpoint.
 
@@ -197,7 +177,7 @@ After selecting the teacher checkpoint, copy or symlink it to:
 checkpoints/qwen3_8b_teacher.pth
 ```
 
-### 2. Train the Qwen3-0.6B SWD-H Student
+### 🎓 2. Train the Qwen3-0.6B SWD-H Student
 
 ```bash
 CONDA_ENV_NAME=swdh-stage1 \
@@ -205,7 +185,7 @@ TEACHER_CKPT=checkpoints/qwen3_8b_teacher.pth \
 bash scripts/train_stage1_swdh.sh
 ```
 
-### 3. Run Inference
+### 🔮 3. Run Inference
 
 ```bash
 CKPT_ROOT=output/stage1_swdh_qwen3_8b_to_qwen3_0_6b/<run_dir> \
@@ -216,14 +196,14 @@ bash scripts/inference_stage1_swdh.sh
 
 Use `TEST_EPOCH=60` to run one checkpoint.
 
-### 4. Evaluate
+### 📊 4. Evaluate
 
 ```bash
 bash scripts/eval_stage1_swdh.sh \
   --base-root output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/results
 ```
 
-## Path Overrides
+## 🛠️ Path Overrides
 
 You can override default roots without editing source files:
 
@@ -242,7 +222,7 @@ python -u train.py \
   --options model.teacher.ckpt=/path/to/qwen3_8b_teacher.pth
 ```
 
-## Citation
+## 📚 Citation
 
 The paper is currently represented here by its title. Citation metadata will be updated after the public paper/arXiv/camera-ready version is available.
 
@@ -254,6 +234,6 @@ The paper is currently represented here by its title. Citation metadata will be 
 }
 ```
 
-## Acknowledgement
+## 🙏 Acknowledgement
 
 This codebase builds on AffectGPT-style multimodal instruction tuning and open-source components from the PyTorch, Hugging Face Transformers, vLLM, CLIP, HuBERT, BLIP/LAVIS, and ImageBind ecosystems.
