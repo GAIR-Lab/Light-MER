@@ -25,10 +25,10 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 | Component | Status | Notes |
 |---|---|---|
 | Stage 1 | Released | SWD-H distillation code for Qwen3-8B teacher to Qwen3-0.6B student |
-| Stage 2 | Coming Soon | M-GRPO refinement will be released in a future update |
+| Stage 2 | COMING SOON | M-GRPO refinement will be released in a future update |
 | Evaluation | Released | Inference scripts, label extraction, and Emotion Wheel metrics |
-| Model Checkpoint | Coming Soon | Public checkpoints will be added after release approval |
-| Codex Skill | Coming Soon | A lightweight Codex helper for running Light-MER workflows |
+| Model Checkpoint | COMING SOON | Public checkpoints will be added after release approval |
+| Codex Skill | COMING SOON | A lightweight Codex helper for running Light-MER workflows |
 
 ## 🧠 Method Overview
 
