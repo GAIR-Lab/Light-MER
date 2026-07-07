@@ -16,9 +16,9 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 
 ## 📰 News
 
-- [JULY 06, 2026] README and public config aligned with the Light-MER paper; core model source is included in the release.
-- [JULY 05, 2026] Stage 1 SWD-H training, inference, and evaluation code released.
-- [COMING SOON] Stage 2 M-GRPO refinement code and instructions.
+- **July 06, 2026**: README and public config aligned with the Light-MER paper; core model source is included in the release.
+- **July 05, 2026**: Stage 1 SWD-H training, inference, and evaluation code released.
+- **Coming Soon**: Stage 2 M-GRPO refinement code and instructions.
 
 ## 🚦 Release Status
 
