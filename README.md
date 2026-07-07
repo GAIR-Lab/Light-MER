@@ -117,11 +117,66 @@ pip install -r requirements.txt
 
 The original Stage 1 experiments used an H100 80GB GPU. Smaller GPUs may require reducing batch size, sequence length, or enabling additional memory optimizations.
 
-## 🤖 Prepare Models
+## 📦 Dataset
+
+### 📝 MER-Caption+
+
+Stage 1 training uses MER-Caption+ from the MER2025 release:
+
+- Download: [MERChallenge/MER2025](https://huggingface.co/datasets/MERChallenge/MER2025)
+
+Expected layout:
+
+```text
+dataset/
+└── mer2025-dataset/
+    ├── video/
+    ├── audio/
+    ├── openface_face/
+    ├── subtitle_chieng.csv
+    ├── track2_train_mercaptionplus.csv
+    └── track3_train_mercaptionplus.csv
+```
+
+### 🧪 MER-UniBench
+
+Evaluation follows the MER-UniBench setting, covering basic emotion recognition, sentiment analysis, and open-vocabulary MER.
+
+- MER2023/MER2024/SIMS/SIMS v2/CMU-MOSI/CMU-MOSEI/IEMOCAP/MELD: [Baidu Netdisk](https://pan.baidu.com/s/1kbfs5pG_hAri0QwvQl-Ecg?pwd=b9vn) / [TeraBox](https://1024terabox.com/s/1AE7uAU3Ib8aRBSyF1TMpow)
+- OV-MERD+: [Baidu Netdisk](https://pan.baidu.com/s/1nBTw_ujSTQPAMyIs5Qv8Zw?pwd=k8tj) / [TeraBox](https://1024terabox.com/s/1O130fc81FVsGGsrjLuHyDA)
+
+Expected layout:
+
+```text
+dataset/
+├── mer2023-dataset-process/
+├── mer2024-dataset-process/
+├── meld-process/
+├── iemocap-process/
+├── cmumosi-process/
+├── cmumosei-process/
+├── sims-process/
+├── simsv2-process/
+└── ovmerdplus-process/
+```
+
+## 🤖 Model Zoo
+
+### 🧱 General Checkpoints
 
 Place or symlink pretrained models under `models/`, or set `SWDH_MODEL_ROOT`.
 
-Expected default layout:
+| Model | Type | Used for | Link |
+|---|---|---|---|
+| Qwen3-8B | LLM | Teacher decoder | [Hugging Face](https://huggingface.co/Qwen/Qwen3-8B) |
+| Qwen3-0.6B | LLM | Student decoder | [Hugging Face](https://huggingface.co/Qwen/Qwen3-0.6B) |
+| Qwen2.5-7B-Instruct | LLM | Evaluation label extraction | [Hugging Face](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct) |
+| CLIP-ViT-Large-Patch14 | Visual Encoder | Teacher visual encoder | [Hugging Face](https://huggingface.co/openai/clip-vit-large-patch14) |
+| CLIP-ViT-Base-Patch16 | Visual Encoder | Student visual encoder | [Hugging Face](https://huggingface.co/openai/clip-vit-base-patch16) |
+| Chinese HuBERT-Large | Audio Encoder | Teacher audio encoder | [Hugging Face](https://huggingface.co/TencentGameMate/chinese-hubert-large) |
+| Chinese HuBERT-Base | Audio Encoder | Student audio encoder | [Hugging Face](https://huggingface.co/TencentGameMate/chinese-hubert-base) |
+
+Expected layout:
 
 ```text
 models/
@@ -134,29 +189,13 @@ models/
 └── chinese-hubert-base/
 ```
 
-`Qwen2.5-7B-Instruct` is used by `eval_student_model.py` with vLLM to extract normalized emotion labels from generated text.
+### 🏁 Light-MER Checkpoints
 
-## 📦 Prepare Data
-
-Place processed datasets under `dataset/`, or set `SWDH_DATASET_ROOT`.
-
-Expected layout:
-
-```text
-dataset/
-├── mer2025-dataset/
-├── mer2023-dataset-process/
-├── mer2024-dataset-process/
-├── meld-process/
-├── iemocap-process/
-├── cmumosi-process/
-├── cmumosei-process/
-├── sims-process/
-├── simsv2-process/
-└── ovmerdplus-process/
-```
-
-Stage 1 training uses MERCaptionPlus files in `mer2025-dataset`, especially `track2_train_mercaptionplus.csv`, `track3_train_mercaptionplus.csv`, `subtitle_chieng.csv`, plus audio/video/OpenFace features.
+| Model Name | Description | Link |
+|---|---|---|
+| Light-MER Stage 1 SWD-H | Qwen3-0.6B student after SWD-H distillation | |
+| Light-MER Stage 2 M-GRPO | Final student after M-GRPO refinement | |
+| Light-MER Teacher | Qwen3-8B teacher checkpoint | |
 
 ## 🚀 Getting Started
 
@@ -230,6 +269,10 @@ The paper is currently represented here by its title. Citation metadata will be 
   note = {Code: https://github.com/kevinkke233-maker/Light-MER}
 }
 ```
+
+## 📄 License
+
+This project is released under the [Apache License 2.0](LICENSE). Please also follow the licenses and usage terms of the external datasets, pretrained models, and checkpoints used with this codebase.
 
 ## 🙏 Acknowledgement
 
