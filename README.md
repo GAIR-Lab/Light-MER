@@ -47,6 +47,65 @@ Light-MER compresses a Qwen3-8B multimodal emotion teacher into a Qwen3-0.6B dep
 
 The paper uses face-cropped visual inputs because facial regions carry salient affective cues. The current configs expose the same multimodal data path through `face_or_frame: "multiface_audio_face_text"`.
 
+## ⚡ Efficiency Snapshot
+
+Light-MER keeps the multimodal emotion reasoning pipeline compact: the Qwen3-0.6B student uses about 11x fewer FLOPs and much lower peak memory than the Qwen3-8B teacher, while preserving the same MER generation interface.
+
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2">Model</th>
+      <th rowspan="2">Total Params</th>
+      <th rowspan="2">FLOPs (G)</th>
+      <th rowspan="2">Peak Mem.</th>
+      <th rowspan="2">Compress.</th>
+      <th colspan="2">Direct</th>
+      <th colspan="2">Descriptive</th>
+    </tr>
+    <tr>
+      <th>Time<br>(s/sample)</th>
+      <th>Words<br>(/sample)</th>
+      <th>Time<br>(s/sample)</th>
+      <th>Words<br>(/sample)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Teacher (Qwen3-8B)</td>
+      <td>9.00B</td>
+      <td>10902.6</td>
+      <td>20.04 GB</td>
+      <td>-</td>
+      <td>0.901</td>
+      <td>9.5</td>
+      <td>6.138</td>
+      <td>104.4</td>
+    </tr>
+    <tr>
+      <td><strong>Student SWD-H (Qwen3-0.6B)</strong></td>
+      <td>854.93M</td>
+      <td>988.8</td>
+      <td>2.54 GB</td>
+      <td>11.0x</td>
+      <td>0.561</td>
+      <td>8.5</td>
+      <td>4.621</td>
+      <td>110.5</td>
+    </tr>
+    <tr>
+      <td><strong>Student M-GRPO (Qwen3-0.6B)</strong></td>
+      <td>854.93M</td>
+      <td>988.8</td>
+      <td>2.54 GB</td>
+      <td>11.0x</td>
+      <td>0.523</td>
+      <td>7.9</td>
+      <td>3.105</td>
+      <td>70.8</td>
+    </tr>
+  </tbody>
+</table>
+
 ## 📐 SWD-H Settings
 
 Canonical config:
