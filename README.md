@@ -40,7 +40,7 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 
 ## 🛠️ AI Agent Skills
 
-Stage 1 deployment helpers are included for both Codex and Claude Code. They give the agent a workflow for checking required checkpoints, pretrained models, datasets, config files, and inference outputs before running training, inference, or evaluation.
+Stage 1 deployment helpers are included for both Codex and Claude Code. After installation, ask the agent to train, run inference, or evaluate Stage 1; the skill automatically checks required checkpoints, pretrained models, datasets, config files, and inference outputs before running project scripts.
 
 <details>
 <summary><strong>Codex</strong></summary>
@@ -53,13 +53,15 @@ mkdir -p ~/.codex/skills
 cp -r Light-MER/codex/skills/light-mer ~/.codex/skills/
 ```
 
-Manual preflight:
+Use:
 
-```bash
-python codex/skills/light-mer/scripts/stage1_preflight.py train
-python codex/skills/light-mer/scripts/stage1_preflight.py inference
-python codex/skills/light-mer/scripts/stage1_preflight.py eval
+```text
+Use $light-mer to set up Light-MER Stage 1 inference with the released SWD-H checkpoint.
+Use $light-mer to train Stage 1 SWD-H from my local teacher checkpoint.
+Use $light-mer to evaluate my Stage 1 inference outputs.
 ```
+
+The preflight checker runs inside the skill flow. If anything is missing, Codex asks for the missing local paths and deploys them with symlinks or environment variables.
 
 </details>
 
@@ -74,13 +76,15 @@ mkdir -p ~/.claude/skills
 cp -r Light-MER/claude-code/skills/light-mer ~/.claude/skills/
 ```
 
-Manual preflight:
+Use:
 
-```bash
-python claude-code/skills/light-mer/scripts/stage1_preflight.py train
-python claude-code/skills/light-mer/scripts/stage1_preflight.py inference
-python claude-code/skills/light-mer/scripts/stage1_preflight.py eval
+```text
+Set up Light-MER Stage 1 inference with the released SWD-H checkpoint.
+Train Light-MER Stage 1 SWD-H from my local teacher checkpoint.
+Evaluate my Light-MER Stage 1 inference outputs.
 ```
+
+The preflight checker runs inside the skill flow. If anything is missing, Claude Code asks for the missing local paths and deploys them with symlinks or environment variables.
 
 </details>
 

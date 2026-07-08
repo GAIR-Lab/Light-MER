@@ -5,7 +5,7 @@ description: Deploy, train, infer, and evaluate Light-MER Stage 1 SWD-H workflow
 
 # Light-MER Stage 1
 
-Use this skill to operate the public Light-MER Stage 1 SWD-H release. Keep the workflow practical: first identify whether the user wants **train** or **inference**, then run preflight checks, deploy missing resources through symlinks or environment variables, and only then run the project scripts.
+Use this skill to operate the public Light-MER Stage 1 SWD-H release. Keep the workflow practical: first identify whether the user wants **train**, **inference**, or **evaluation**, then run the automatic preflight check yourself, deploy missing resources through symlinks or environment variables, and only then run the project scripts.
 
 Do not use this skill for Stage 2 M-GRPO implementation, GRPO/RLHF reward code, policy optimization, or private experiment cleanup.
 
@@ -30,19 +30,17 @@ If the current directory is not the repo root, locate it before continuing. Neve
 3. If the user asks to **evaluate**, first verify inference outputs exist; if not, run or request inference first.
 4. If the user is unclear, ask one short question: `Do you want to train Stage 1, run inference with released checkpoints, or evaluate existing inference outputs?`
 
-## Preflight First
+## Automatic Preflight
 
-Always run the bundled preflight script before train, inference, or eval:
+Treat preflight as an internal first step, not as a manual command for the user. Before train, inference, or eval, run the bundled preflight script for the selected mode:
 
 ```bash
-python codex/skills/light-mer/scripts/stage1_preflight.py train
-python codex/skills/light-mer/scripts/stage1_preflight.py inference
-python codex/skills/light-mer/scripts/stage1_preflight.py eval
+python codex/skills/light-mer/scripts/stage1_preflight.py <train|inference|eval>
 ```
 
-Use `--json` when you need machine-readable output. The script exits with code `2` when required resources are missing.
+Use `--json` when you need machine-readable output. The script exits with code `2` when required resources are missing; this is expected and should trigger the resource deployment flow.
 
-When preflight reports missing resources, ask the user for the missing paths in one concise batch. If the user provides paths, deploy them with symlinks by default:
+When preflight reports missing resources, summarize the missing checkpoint/model/dataset/output paths and ask the user for those paths in one concise batch. If the user provides paths, deploy them with symlinks by default:
 
 ```bash
 mkdir -p checkpoints models dataset
