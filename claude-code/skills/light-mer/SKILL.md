@@ -5,7 +5,7 @@ description: Deploy, train, infer, and evaluate Light-MER Stage 1 SWD-H workflow
 
 # Light-MER Stage 1
 
-Use this skill to operate the public Light-MER Stage 1 SWD-H release. Keep the workflow practical: first identify whether the user wants **train**, **inference**, or **evaluation**, then run the automatic preflight check yourself, deploy missing resources through symlinks or environment variables, and only then run the project scripts.
+Use this skill to operate the public Light-MER Stage 1 SWD-H release. Keep the workflow practical: if the user only invokes the skill, show the Stage 1 menu; otherwise identify whether the user wants **train**, **inference**, or **evaluation**, run the automatic preflight check yourself, deploy missing resources through symlinks or environment variables, and only then run the project scripts.
 
 Do not use this skill for Stage 2 M-GRPO implementation, GRPO/RLHF reward code, policy optimization, or private experiment cleanup.
 
@@ -23,12 +23,27 @@ scripts/inference_stage1_swdh.sh
 
 If the current directory is not the repo root, locate it before continuing. Never move the user's original checkpoints or datasets. Prefer symlinks into `checkpoints/`, `models/`, or `dataset/`.
 
+## Startup Menu
+
+If the user invokes the Light-MER skill without choosing a workflow, show this menu and wait for a selection:
+
+```text
+Light-MER Stage 1 menu
+1. Inference: set up or run the released SWD-H student checkpoint.
+2. Train: train Stage 1 SWD-H from a teacher checkpoint.
+3. Evaluation: evaluate existing Stage 1 inference outputs.
+
+Reply with 1, 2, or 3. You can include any known local checkpoint, model, dataset, or output paths.
+```
+
+Do not show the menu when the user already asks for train, inference, or evaluation. Continue directly to the matching workflow and automatic preflight.
+
 ## Decision Flow
 
 1. If the user asks to **train**, use the Train workflow.
 2. If the user asks to **infer**, **run inference**, **test checkpoints**, or **evaluate a released Stage 1 checkpoint**, use the Inference workflow.
 3. If the user asks to **evaluate**, first verify inference outputs exist; if not, run or request inference first.
-4. If the user is unclear, ask one short question: `Do you want to train Stage 1, run inference with released checkpoints, or evaluate existing inference outputs?`
+4. If the user is unclear or only invokes the skill, show the Startup Menu.
 
 ## Automatic Preflight
 

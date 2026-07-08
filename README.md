@@ -40,7 +40,7 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 
 ## 🛠️ AI Agent Skills
 
-Stage 1 deployment helpers are included for both Codex and Claude Code. After installation, ask the agent to train, run inference, or evaluate Stage 1; the skill automatically checks required checkpoints, pretrained models, datasets, config files, and inference outputs before running project scripts.
+Stage 1 deployment helpers are included for both Codex and Claude Code. After installation, start the skill with one prompt; if no workflow is specified, the skill opens a Stage 1 menu and then automatically checks required checkpoints, pretrained models, datasets, config files, and inference outputs before running project scripts.
 
 <details>
 <summary><strong>Codex</strong></summary>
@@ -56,12 +56,10 @@ cp -r Light-MER/codex/skills/light-mer ~/.codex/skills/
 Use:
 
 ```text
-Use $light-mer to set up Light-MER Stage 1 inference with the released SWD-H checkpoint.
-Use $light-mer to train Stage 1 SWD-H from my local teacher checkpoint.
-Use $light-mer to evaluate my Stage 1 inference outputs.
+Use $light-mer.
 ```
 
-The preflight checker runs inside the skill flow. If anything is missing, Codex asks for the missing local paths and deploys them with symlinks or environment variables.
+Codex will open a Stage 1 menu for inference, training, or evaluation. The preflight checker runs inside the selected workflow. If anything is missing, Codex asks for the missing local paths and deploys them with symlinks or environment variables.
 
 </details>
 
@@ -79,12 +77,10 @@ cp -r Light-MER/claude-code/skills/light-mer ~/.claude/skills/
 Use:
 
 ```text
-Set up Light-MER Stage 1 inference with the released SWD-H checkpoint.
-Train Light-MER Stage 1 SWD-H from my local teacher checkpoint.
-Evaluate my Light-MER Stage 1 inference outputs.
+Use the Light-MER skill.
 ```
 
-The preflight checker runs inside the skill flow. If anything is missing, Claude Code asks for the missing local paths and deploys them with symlinks or environment variables.
+Claude Code will open a Stage 1 menu for inference, training, or evaluation. The preflight checker runs inside the selected workflow. If anything is missing, Claude Code asks for the missing local paths and deploys them with symlinks or environment variables.
 
 </details>
 
