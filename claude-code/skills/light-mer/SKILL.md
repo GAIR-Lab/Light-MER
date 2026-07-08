@@ -35,9 +35,9 @@ If the current directory is not the repo root, locate it before continuing. Neve
 Always run the bundled preflight script before train, inference, or eval:
 
 ```bash
-python codex_skill/light-mer/scripts/stage1_preflight.py train
-python codex_skill/light-mer/scripts/stage1_preflight.py inference
-python codex_skill/light-mer/scripts/stage1_preflight.py eval
+python claude-code/skills/light-mer/scripts/stage1_preflight.py train
+python claude-code/skills/light-mer/scripts/stage1_preflight.py inference
+python claude-code/skills/light-mer/scripts/stage1_preflight.py eval
 ```
 
 Use `--json` when you need machine-readable output. The script exits with code `2` when required resources are missing.

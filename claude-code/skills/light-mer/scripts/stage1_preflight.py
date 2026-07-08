@@ -10,7 +10,14 @@ from pathlib import Path
 from typing import Iterable
 
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+def find_repo_root(start: Path) -> Path:
+    for path in [start, *start.parents]:
+        if (path / "train.py").exists() and (path / "train_configs").exists():
+            return path
+    return start.parents[4]
+
+
+REPO_ROOT = find_repo_root(Path(__file__).resolve())
 
 MODEL_DIRS = {
     "qwen3_8b": "Qwen3-8B",
