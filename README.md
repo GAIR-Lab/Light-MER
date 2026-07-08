@@ -23,7 +23,7 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 
 ## 📰 News
 
-- **July 08, 2026**: Stage 1 SWD-H student checkpoints released on Hugging Face.
+- **July 08, 2026**: Stage 1 SWD-H student checkpoints and Stage 1 Codex Skill released.
 - **July 06, 2026**: README and public config aligned with the Light-MER paper; core model source is included in the release.
 - **July 05, 2026**: Stage 1 SWD-H training, inference, and evaluation code released.
 - **Coming Soon**: Stage 2 M-GRPO refinement code and instructions.
@@ -36,13 +36,21 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 | Stage 2 | COMING SOON | M-GRPO refinement will be released in a future update |
 | Evaluation | Released | Inference scripts, label extraction, and Emotion Wheel metrics |
 | Model Checkpoint | PARTIALLY RELEASED | Teacher and Stage 1 SWD-H checkpoints released; Stage 2 checkpoint coming soon |
-| Codex Skill | COMING SOON | A lightweight Codex helper for running Light-MER workflows |
+| Codex Skill | Released | Stage 1 deployment helper with train, inference, and evaluation preflight checks |
 
 ## 🛠️ Codex Skill
 
-We plan to release a lightweight Codex Skill as the quickest deployment entry point for Light-MER. The goal is that users can open one readable file, `codex_skill/light-mer/SKILL.md`, and follow the environment setup, checkpoint placement, inference, and evaluation workflow without digging through the full codebase.
+The Stage 1 Codex Skill is available at `codex_skill/light-mer/SKILL.md`. It gives Codex a deployment workflow for checking required checkpoints, pretrained models, datasets, config files, and inference outputs before running training, inference, or evaluation.
 
-Status: **Coming Soon**.
+Manual preflight checks:
+
+```bash
+python codex_skill/light-mer/scripts/stage1_preflight.py train
+python codex_skill/light-mer/scripts/stage1_preflight.py inference
+python codex_skill/light-mer/scripts/stage1_preflight.py eval
+```
+
+Status: **Released for Stage 1**. Stage 2 support will be added with the M-GRPO release.
 
 ## 🧠 Method Overview
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Light-MER"
+  short_description: "Run Light-MER Stage 1 workflows"
+  default_prompt: "Use $light-mer to set up Light-MER Stage 1 for training or inference."
