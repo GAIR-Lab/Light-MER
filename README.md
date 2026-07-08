@@ -7,9 +7,6 @@ Official implementation for the paper:
 <p align="center">
   <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.4%2B-ee4c2c?style=flat&logo=pytorch&logoColor=white" alt="PyTorch 2.4+"></a>
   <img src="https://img.shields.io/badge/Python-3.10-3776ab?style=flat&logo=python&logoColor=white" alt="Python 3.10">
-  <img src="https://img.shields.io/badge/Qwen3-8B%20%7C%200.6B-6f42c1?style=flat" alt="Qwen3 8B and 0.6B">
-  <img src="https://img.shields.io/badge/Stage%201-SWD--H-1f77b4?style=flat" alt="Stage 1 SWD-H">
-  <img src="https://img.shields.io/badge/Stage%202-M--GRPO%20Coming%20Soon-9ca3af?style=flat" alt="Stage 2 M-GRPO Coming Soon">
   <a href="https://huggingface.co/kevin233333/Light-MER"><img src="https://img.shields.io/badge/Hugging%20Face-Checkpoint-ffcc4d?style=flat" alt="Hugging Face checkpoint"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-2ea44f?style=flat" alt="Apache License 2.0"></a>
 </p>
