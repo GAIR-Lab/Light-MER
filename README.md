@@ -301,4 +301,8 @@ This project is released under the [Apache License 2.0](LICENSE). Please also fo
 
 ## 🙏 Acknowledgement
 
-This codebase builds on AffectGPT-style multimodal instruction tuning and open-source components from the PyTorch, Hugging Face Transformers, vLLM, CLIP, HuBERT, BLIP/LAVIS, and ImageBind ecosystems.
+- Built on AffectGPT-style multimodal instruction tuning: [AffectGPT](https://github.com/zeroQiaoba/AffectGPT/tree/master/AffectGPT).
+- Developed with [PyTorch](https://pytorch.org/) and [Hugging Face Transformers](https://github.com/huggingface/transformers).
+- Uses [vLLM](https://github.com/vllm-project/vllm) for evaluation-time label extraction and efficient LLM inference.
+- Uses [CLIP](https://github.com/openai/CLIP) visual encoders and HuBERT audio encoders for multimodal feature extraction.
+- Reuses ideas and open-source components from [BLIP/LAVIS](https://github.com/salesforce/LAVIS) and [ImageBind](https://github.com/facebookresearch/ImageBind).
