@@ -72,57 +72,6 @@ Light-MER keeps the multimodal emotion reasoning pipeline compact: the Qwen3-0.6
 
 Direct and descriptive columns report latency per sample.
 
-## 📐 SWD-H Settings
-
-Canonical config:
-
-```text
-train_configs/stage1_swdh_qwen3_8b_to_qwen3_0_6b.yaml
-```
-
-Main SWD-H settings:
-
-```yaml
-model:
-  teacher:
-    use_swd: True
-    swd_n_projections: 100
-    swd_p: 2
-    ot_weight: 1.0
-    ot_ramp_steps: 5000
-    kl_weight: 0.0
-```
-
-When `use_swd=True`, the implementation projects teacher hidden states from 4096 to the student hidden size 1024 with a frozen orthogonal teacher projection, and compares them with the student 1024-dimensional hidden states. The SWD-H mask is aligned with the cross-entropy answer-token mask.
-
-## 📁 Directory Layout
-
-```text
-.
-├── train.py
-├── inference_hybird.py
-├── eval_student_model.py
-├── config.py
-├── train_configs/
-│   ├── stage1_teacher_qwen3_8b.yaml
-│   └── stage1_swdh_qwen3_8b_to_qwen3_0_6b.yaml
-├── scripts/
-│   ├── train_teacher_qwen3_8b.sh
-│   ├── train_stage1_swdh.sh
-│   ├── inference_stage1_swdh.sh
-│   ├── eval_stage1_swdh.py
-│   └── eval_stage1_swdh.sh
-├── my_affectgpt/
-│   ├── models/
-│   ├── datasets/
-│   ├── runners/
-│   └── tasks/
-├── toolkit/
-├── emotion_wheel/
-├── requirements.txt
-└── environment.yml
-```
-
 ## ⚙️ Installation
 
 Create a conda environment:
