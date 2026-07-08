@@ -30,6 +30,12 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 | Model Checkpoint | PARTIALLY RELEASED | Teacher checkpoint released; student checkpoints coming soon |
 | Codex Skill | COMING SOON | A lightweight Codex helper for running Light-MER workflows |
 
+## 🛠️ Codex Skill
+
+We plan to release a lightweight Codex Skill as the quickest deployment entry point for Light-MER. The goal is that users can open one readable file, `codex_skill/light-mer/SKILL.md`, and follow the environment setup, checkpoint placement, inference, and evaluation workflow without digging through the full codebase.
+
+Status: **Coming Soon**.
+
 ## 🧠 Method Overview
 
 Light-MER compresses a Qwen3-8B multimodal emotion teacher into a Qwen3-0.6B deployable student. Stage 1 uses SWD-H to align answer-token hidden-state geometry, while Stage 2 follows the M-GRPO refinement track for more concise and emotion-faithful generation.
