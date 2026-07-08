@@ -42,9 +42,10 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 
 Stage 1 deployment helpers are included for both Codex and Claude Code. They give the agent a workflow for checking required checkpoints, pretrained models, datasets, config files, and inference outputs before running training, inference, or evaluation.
 
-### Install Skill Files
+<details>
+<summary><strong>Codex</strong></summary>
 
-Codex:
+Install:
 
 ```bash
 git clone https://github.com/kevinkke233-maker/Light-MER.git
@@ -52,17 +53,7 @@ mkdir -p ~/.codex/skills
 cp -r Light-MER/codex/skills/light-mer ~/.codex/skills/
 ```
 
-Claude Code:
-
-```bash
-git clone https://github.com/kevinkke233-maker/Light-MER.git
-mkdir -p ~/.claude/skills
-cp -r Light-MER/claude-code/skills/light-mer ~/.claude/skills/
-```
-
-### Manual Preflight
-
-Codex copy:
+Manual preflight:
 
 ```bash
 python codex/skills/light-mer/scripts/stage1_preflight.py train
@@ -70,13 +61,28 @@ python codex/skills/light-mer/scripts/stage1_preflight.py inference
 python codex/skills/light-mer/scripts/stage1_preflight.py eval
 ```
 
-Claude Code copy:
+</details>
+
+<details>
+<summary><strong>Claude Code</strong></summary>
+
+Install:
+
+```bash
+git clone https://github.com/kevinkke233-maker/Light-MER.git
+mkdir -p ~/.claude/skills
+cp -r Light-MER/claude-code/skills/light-mer ~/.claude/skills/
+```
+
+Manual preflight:
 
 ```bash
 python claude-code/skills/light-mer/scripts/stage1_preflight.py train
 python claude-code/skills/light-mer/scripts/stage1_preflight.py inference
 python claude-code/skills/light-mer/scripts/stage1_preflight.py eval
 ```
+
+</details>
 
 Status: **Released for Stage 1**. Stage 2 support will be added with the M-GRPO release.
 
