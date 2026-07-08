@@ -53,9 +53,9 @@ Light-MER keeps the multimodal emotion reasoning pipeline compact: the Qwen3-0.6
 
 | Model | Scale | Efficiency | Direct output | Descriptive output |
 |---|---:|---:|---:|---:|
-| Teacher (Qwen3-8B) | 9.00B params<br>20.04 GB peak | 10,902.6G FLOPs<br>baseline | 0.901s / sample<br>9.5 words / sample | 6.138s / sample<br>104.4 words / sample |
-| **Student SWD-H (Qwen3-0.6B)** | **854.93M params**<br>**2.54 GB peak** | **988.8G FLOPs**<br>**11.0x smaller** | **0.561s / sample**<br>8.5 words / sample | **4.621s / sample**<br>110.5 words / sample |
-| **Student M-GRPO (Qwen3-0.6B)** | **854.93M params**<br>**2.54 GB peak** | **988.8G FLOPs**<br>**11.0x smaller** | **0.523s / sample**<br>7.9 words / sample | **3.105s / sample**<br>70.8 words / sample |
+| Teacher&nbsp;(Qwen3-8B) | 9.00B&nbsp;params / 20.04&nbsp;GB&nbsp;peak | 10,902.6G FLOPs<br>baseline | 0.901s / sample<br>9.5 words / sample | 6.138s / sample<br>104.4 words / sample |
+| **SWD-H&nbsp;Student&nbsp;(Qwen3-0.6B)** | **854.93M&nbsp;params / 2.54&nbsp;GB&nbsp;peak** | **988.8G FLOPs**<br>**11.0x smaller** | **0.561s / sample**<br>8.5 words / sample | **4.621s / sample**<br>110.5 words / sample |
+| **M-GRPO&nbsp;Student&nbsp;(Qwen3-0.6B)** | **854.93M&nbsp;params / 2.54&nbsp;GB&nbsp;peak** | **988.8G FLOPs**<br>**11.0x smaller** | **0.523s / sample**<br>7.9 words / sample | **3.105s / sample**<br>70.8 words / sample |
 
 ## 📐 SWD-H Settings
 
