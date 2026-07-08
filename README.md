@@ -51,11 +51,13 @@ The paper uses face-cropped visual inputs because facial regions carry salient a
 
 Light-MER keeps the multimodal emotion reasoning pipeline compact: the Qwen3-0.6B student uses about **11x fewer FLOPs** and **2.54 GB peak memory**, while preserving the same MER generation interface.
 
-| Model | Efficiency snapshot |
-|---|---|
-| Teacher | Qwen3&#8209;8B, 9.00B params, 20.04 GB peak, 10,902.6G FLOPs. Direct: 0.901s/sample, 9.5 words/sample. Descriptive: 6.138s/sample, 104.4 words/sample. |
-| **SWD&#8209;H Student** | **Qwen3&#8209;0.6B, 854.93M params, 2.54 GB peak, 988.8G FLOPs, 11.0x smaller.** Direct: **0.561s/sample**, 8.5 words/sample. Descriptive: **4.621s/sample**, 110.5 words/sample. |
-| **M&#8209;GRPO Student** | **Qwen3&#8209;0.6B, 854.93M params, 2.54 GB peak, 988.8G FLOPs, 11.0x smaller.** Direct: **0.523s/sample**, 7.9 words/sample. Descriptive: **3.105s/sample**, 70.8 words/sample. |
+| Model | Params | Peak Mem. | FLOPs | Direct | Descriptive |
+|---|---:|---:|---:|---:|---:|
+| Teacher | 9.00B | 20.04 GB | 10,902.6G | 0.901s | 6.138s |
+| **SWD&#8209;H Student** | **854.93M** | **2.54 GB** | **988.8G (11.0x)** | **0.561s** | **4.621s** |
+| **M&#8209;GRPO Student** | **854.93M** | **2.54 GB** | **988.8G (11.0x)** | **0.523s** | **3.105s** |
+
+Direct and descriptive columns report latency per sample.
 
 ## 📐 SWD-H Settings
 
