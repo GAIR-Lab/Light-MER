@@ -49,62 +49,13 @@ The paper uses face-cropped visual inputs because facial regions carry salient a
 
 ## ⚡ Efficiency Snapshot
 
-Light-MER keeps the multimodal emotion reasoning pipeline compact: the Qwen3-0.6B student uses about 11x fewer FLOPs and much lower peak memory than the Qwen3-8B teacher, while preserving the same MER generation interface.
+Light-MER keeps the multimodal emotion reasoning pipeline compact: the Qwen3-0.6B student uses about **11x fewer FLOPs** and **2.54 GB peak memory**, while preserving the same MER generation interface.
 
-<table>
-  <thead>
-    <tr>
-      <th rowspan="2">Model</th>
-      <th rowspan="2">Total Params</th>
-      <th rowspan="2">FLOPs (G)</th>
-      <th rowspan="2">Peak Mem.</th>
-      <th rowspan="2">Compress.</th>
-      <th colspan="2">Direct</th>
-      <th colspan="2">Descriptive</th>
-    </tr>
-    <tr>
-      <th>Time<br>(s/sample)</th>
-      <th>Words<br>(/sample)</th>
-      <th>Time<br>(s/sample)</th>
-      <th>Words<br>(/sample)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Teacher (Qwen3-8B)</td>
-      <td>9.00B</td>
-      <td>10902.6</td>
-      <td>20.04 GB</td>
-      <td>-</td>
-      <td>0.901</td>
-      <td>9.5</td>
-      <td>6.138</td>
-      <td>104.4</td>
-    </tr>
-    <tr>
-      <td><strong>Student SWD-H (Qwen3-0.6B)</strong></td>
-      <td>854.93M</td>
-      <td>988.8</td>
-      <td>2.54 GB</td>
-      <td>11.0x</td>
-      <td>0.561</td>
-      <td>8.5</td>
-      <td>4.621</td>
-      <td>110.5</td>
-    </tr>
-    <tr>
-      <td><strong>Student M-GRPO (Qwen3-0.6B)</strong></td>
-      <td>854.93M</td>
-      <td>988.8</td>
-      <td>2.54 GB</td>
-      <td>11.0x</td>
-      <td>0.523</td>
-      <td>7.9</td>
-      <td>3.105</td>
-      <td>70.8</td>
-    </tr>
-  </tbody>
-</table>
+| Model | Scale | Efficiency | Direct output | Descriptive output |
+|---|---:|---:|---:|---:|
+| Teacher (Qwen3-8B) | 9.00B params<br>20.04 GB peak | 10,902.6G FLOPs<br>baseline | 0.901s / sample<br>9.5 words / sample | 6.138s / sample<br>104.4 words / sample |
+| **Student SWD-H (Qwen3-0.6B)** | **854.93M params**<br>**2.54 GB peak** | **988.8G FLOPs**<br>**11.0x smaller** | **0.561s / sample**<br>8.5 words / sample | **4.621s / sample**<br>110.5 words / sample |
+| **Student M-GRPO (Qwen3-0.6B)** | **854.93M params**<br>**2.54 GB peak** | **988.8G FLOPs**<br>**11.0x smaller** | **0.523s / sample**<br>7.9 words / sample | **3.105s / sample**<br>70.8 words / sample |
 
 ## 📐 SWD-H Settings
 
