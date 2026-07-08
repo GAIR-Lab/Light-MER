@@ -53,13 +53,7 @@ mkdir -p ~/.codex/skills
 cp -r Light-MER/codex/skills/light-mer ~/.codex/skills/
 ```
 
-Use:
-
-```text
-Use $light-mer.
-```
-
-Codex will open a Stage 1 menu for inference, training, or evaluation. The preflight checker runs inside the selected workflow. If anything is missing, Codex asks for the missing local paths and deploys them with symlinks or environment variables.
+After installation, open a new Codex session and invoke the installed Light-MER skill. Codex will open a Stage 1 menu for inference, training, or evaluation. The preflight checker runs inside the selected workflow. If anything is missing, Codex asks for the missing local paths and deploys them with symlinks or environment variables.
 
 </details>
 
@@ -74,13 +68,7 @@ mkdir -p ~/.claude/skills
 cp -r Light-MER/claude-code/skills/light-mer ~/.claude/skills/
 ```
 
-Use:
-
-```text
-Use the Light-MER skill.
-```
-
-Claude Code will open a Stage 1 menu for inference, training, or evaluation. The preflight checker runs inside the selected workflow. If anything is missing, Claude Code asks for the missing local paths and deploys them with symlinks or environment variables.
+After installation, invoke the installed Light-MER skill in Claude Code. Claude Code will open a Stage 1 menu for inference, training, or evaluation. The preflight checker runs inside the selected workflow. If anything is missing, Claude Code asks for the missing local paths and deploys them with symlinks or environment variables.
 
 </details>
 
