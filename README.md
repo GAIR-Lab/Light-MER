@@ -28,6 +28,17 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 - **July 05, 2026**: Stage 1 SWD-H training, inference, and evaluation code released.
 - **Coming Soon**: Stage 2 M-GRPO refinement code and instructions.
 
+**TODO list sorted by priority**
+
+- [x] Release Stage 1 SWD-H training, inference, and evaluation code. (Completed on July 05, 2026)
+- [x] Release Light-MER teacher and Stage 1 SWD-H student checkpoints. (Completed on July 08, 2026)
+- [x] Release Codex and Claude Code Stage 1 deployment skills. (Completed on July 08, 2026)
+- [ ] Release Stage 2 M-GRPO refinement code and instructions. (Coming soon)
+- [ ] Release Stage 2 M-GRPO checkpoint. (Coming soon)
+- [ ] Release additional reproducibility notes and benchmark logs. (Coming soon)
+
+**If you encounter any questions or discover a bug within the paper or code, please do not hesitate to open an issue or submit a pull request.**
+
 ## 🚦 Release Status
 
 | Component | Status | Notes |
@@ -48,7 +59,7 @@ Stage 1 deployment helpers are included for both Codex and Claude Code. After in
 Install:
 
 ```bash
-git clone https://github.com/kevinkke233-maker/Light-MER.git
+git clone https://github.com/GAIR-Lab/Light-MER.git
 mkdir -p ~/.codex/skills
 cp -r Light-MER/codex/skills/light-mer ~/.codex/skills/
 ```
@@ -63,7 +74,7 @@ After installation, open a new Codex session and invoke the installed Light-MER 
 Install:
 
 ```bash
-git clone https://github.com/kevinkke233-maker/Light-MER.git
+git clone https://github.com/GAIR-Lab/Light-MER.git
 mkdir -p ~/.claude/skills
 cp -r Light-MER/claude-code/skills/light-mer ~/.claude/skills/
 ```
@@ -271,7 +282,7 @@ The paper is currently represented here by its title. Citation metadata will be 
 @misc{lightmer2026,
   title = {Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?},
   year = {2026},
-  note = {Code: https://github.com/kevinkke233-maker/Light-MER}
+  note = {Code: https://github.com/GAIR-Lab/Light-MER}
 }
 ```
 
