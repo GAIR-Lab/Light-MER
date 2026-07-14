@@ -241,18 +241,19 @@ bash scripts/train_stage1_swdh.sh
 
 ```bash
 CKPT_ROOT=output/stage1_swdh_qwen3_8b_to_qwen3_0_6b/<run_dir> \
-TEST_EPOCHS=5-60 \
-SKIP_EPOCH=5 \
+REPEAT=1 \
+BASE_ROOT=output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results \
+TEST_EPOCH=60 \
 bash scripts/inference_stage1_swdh.sh
 ```
 
-Use `TEST_EPOCH=60` to run one checkpoint.
+This runs one task for one model/config, one repeat, and one epoch. The public template does not use a Slurm array by default. To run a local serial sweep, set `TEST_EPOCHS=5-60` and `SKIP_EPOCH=5` explicitly.
 
 ### 📊 4. Evaluate
 
 ```bash
 bash scripts/eval_stage1_swdh.sh \
-  --base-root output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/results
+  --base-root output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results
 ```
 
 ## 🛠️ Path Overrides

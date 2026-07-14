@@ -90,7 +90,7 @@ def emotion_wheel_root(args: argparse.Namespace, repo: Path) -> Path:
 def result_root(args: argparse.Namespace, repo: Path) -> Path:
     if args.result_root:
         return Path(args.result_root).expanduser()
-    return env_path("SWDH_RESULT_ROOT", repo / "output_stage1_swdh_qwen3_8b_to_qwen3_0_6b")
+    return env_path("SWDH_RESULT_ROOT", repo / "output_stage1_swdh_qwen3_8b_to_qwen3_0_6b" / "repeat1" / "results")
 
 
 def teacher_ckpt(args: argparse.Namespace, repo: Path) -> Path:

@@ -136,19 +136,25 @@ models/chinese-hubert-base/
 dataset/<evaluation dataset folders>
 ```
 
-After preflight passes, run one recommended checkpoint:
+After preflight passes, run one task for one model/config, one repeat, and one epoch. This mirrors the original inference granularity without a Slurm array:
 
 ```bash
 CKPT_ROOT=checkpoints/stage1-swdh-qwen3-0.6b \
+REPEAT=1 \
+BASE_ROOT=output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results \
 TEST_EPOCH=60 \
 CONDA_ENV_NAME=swdh-stage1 \
 bash scripts/inference_stage1_swdh.sh
 ```
 
-To run the full released checkpoint trajectory:
+For a different repeat or epoch, change `REPEAT`, `BASE_ROOT`, and `TEST_EPOCH` together. For cluster runs, submit separate jobs for each repeat/epoch instead of using a Slurm array in the public template.
+
+To run a local serial sweep explicitly:
 
 ```bash
 CKPT_ROOT=checkpoints/stage1-swdh-qwen3-0.6b \
+REPEAT=1 \
+BASE_ROOT=output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results \
 TEST_EPOCHS=5-60 \
 SKIP_EPOCH=5 \
 CONDA_ENV_NAME=swdh-stage1 \
@@ -160,6 +166,8 @@ For a subset of datasets:
 ```bash
 DATASET=MER2023,MELD \
 CKPT_ROOT=checkpoints/stage1-swdh-qwen3-0.6b \
+REPEAT=1 \
+BASE_ROOT=output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results \
 TEST_EPOCH=60 \
 bash scripts/inference_stage1_swdh.sh
 ```
@@ -167,7 +175,7 @@ bash scripts/inference_stage1_swdh.sh
 Inference outputs are expected under:
 
 ```text
-output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/results-<dataset>/
+output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat<repeat>/results-<dataset>/
 ```
 
 ## Evaluation Workflow
@@ -177,7 +185,7 @@ Evaluation requires inference outputs and the Qwen2.5 label extractor:
 ```text
 models/Qwen2.5-7B-Instruct/
 emotion_wheel/
-output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/results-<dataset>/
+output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat<repeat>/results-<dataset>/
 ```
 
 Run:
@@ -185,7 +193,7 @@ Run:
 ```bash
 CONDA_ENV_NAME=swdh-stage1 \
 bash scripts/eval_stage1_swdh.sh \
-  --base-root output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/results
+  --base-root output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results
 ```
 
 Use `--debug` only for smoke checks that should avoid expensive label extraction where possible.

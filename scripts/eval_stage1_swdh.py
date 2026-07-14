@@ -31,13 +31,13 @@ def main():
     parser = argparse.ArgumentParser(description="Evaluate SWD-H stage1 inference outputs.")
     parser.add_argument(
         "--base-root",
-        default="output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/results",
+        default="output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results",
         help="Prefix used by inference_hybird.py before -<dataset> is appended.",
     )
     parser.add_argument("--datasets", nargs="*", default=DATASETS)
     parser.add_argument("--run-dir", default=None, help="Specific run directory name inside each results-<dataset> folder.")
     parser.add_argument("--debug", action="store_true", help="Skip vLLM label extraction calls where possible.")
-    parser.add_argument("--summary", default="output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/eval_summary.json")
+    parser.add_argument("--summary", default="output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/eval_summary.json")
     args = parser.parse_args()
 
     summary = []
