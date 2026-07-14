@@ -23,16 +23,17 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 
 ## 📰 News
 
-- **July 08, 2026**: Stage 1 SWD-H student checkpoints and Stage 1 agent skills released.
-- **July 06, 2026**: README and public config aligned with the Light-MER paper; core model source is included in the release.
-- **July 05, 2026**: Stage 1 SWD-H training, inference, and evaluation code released.
+- **July 14, 2026**: Stage 1 SWD-H student checkpoints and Stage 1 agent skills released.
+- **July 14, 2026**: README and public config aligned with the Light-MER paper; core model source is included in the release.
+- **July 14, 2026**: Stage 1 SWD-H training, inference, and evaluation code released.
+- **July 10, 2026**: Our paper **Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?** was accepted by the **ACM MM 2026 Main Track**.
 - **Coming Soon**: Stage 2 M-GRPO refinement code and instructions.
 
 **TODO list sorted by priority**
 
-- [x] Release Stage 1 SWD-H training, inference, and evaluation code. (Completed on July 05, 2026)
-- [x] Release Light-MER teacher and Stage 1 SWD-H student checkpoints. (Completed on July 08, 2026)
-- [x] Release Codex and Claude Code Stage 1 deployment skills. (Completed on July 08, 2026)
+- [x] Release Stage 1 SWD-H training, inference, and evaluation code. (Completed on July 14, 2026)
+- [x] Release Light-MER teacher and Stage 1 SWD-H student checkpoints. (Completed on July 14, 2026)
+- [x] Release Codex and Claude Code Stage 1 deployment skills. (Completed on July 14, 2026)
 - [ ] Release Stage 2 M-GRPO refinement code and instructions. (Coming soon)
 - [ ] Release Stage 2 M-GRPO checkpoint. (Coming soon)
 - [ ] Release additional reproducibility notes and benchmark logs. (Coming soon)
