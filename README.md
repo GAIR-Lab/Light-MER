@@ -257,6 +257,14 @@ bash scripts/eval_stage1_swdh.sh \
   --base-root output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results
 ```
 
+### 🏁 Expected Results
+
+<p align="center">
+  <img src="assets/light-mer-main-results.png" alt="Light-MER results on MER-UniBench benchmarks" width="100%">
+</p>
+
+A final variation of ±0.3% is normal because inference uses stochastic decoding.
+
 ## 🛠️ Path Overrides
 
 You can override default roots without editing source files:
