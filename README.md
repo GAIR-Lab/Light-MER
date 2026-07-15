@@ -5,7 +5,7 @@ Official implementation for the paper:
 **Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?**
 
 <p align="center">
-  <a href="https://arxiv.org/abs/2607.12787"><img src="https://img.shields.io/badge/Light--MER-2607.12787-b31b1b?style=flat&logo=arxiv&logoColor=white" alt="Light-MER arXiv 2607.12787"></a>
+  <a href="https://arxiv.org/abs/2607.12787"><img src="https://img.shields.io/badge/arXiv-Light--MER-b31b1b?style=flat&logo=arxiv&logoColor=white" alt="arXiv Light-MER"></a>
   <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.4%2B-ee4c2c?style=flat&logo=pytorch&logoColor=white" alt="PyTorch 2.4+"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.10-3776ab?style=flat&logo=python&logoColor=white" alt="Python 3.10"></a>
   <a href="https://huggingface.co/kevin233333/Light-MER"><img src="https://img.shields.io/badge/Hugging%20Face-Checkpoint-ffcc4d?style=flat" alt="Hugging Face checkpoint"></a>
