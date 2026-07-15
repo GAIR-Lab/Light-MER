@@ -28,7 +28,6 @@ This repository hosts the Light-MER open-source release, covering the Stage 1 SW
 - **July 14, 2026**: README and public config aligned with the Light-MER paper; core model source is included in the release.
 - **July 14, 2026**: Stage 1 SWD-H training, inference, and evaluation code released.
 - **July 10, 2026**: 🎉 Our paper **Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?** was accepted by the **ACM MM 2026 Main Track**.
-- **Coming Soon**: Stage 2 M-GRPO refinement code and instructions.
 
 **TODO list sorted by priority**
 
