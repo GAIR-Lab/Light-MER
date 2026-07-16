@@ -286,13 +286,18 @@ python -u train.py \
 
 ## 📚 Citation
 
-The paper is currently represented here by its title. Citation metadata will be updated after the public paper/arXiv/camera-ready version is available.
+If you find Light-MER useful, please cite our arXiv preprint: [arXiv:2607.12787](https://arxiv.org/abs/2607.12787).
 
 ```bibtex
-@misc{lightmer2026,
+@misc{zheng2026lightmer,
   title = {Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?},
+  author = {Zheng, Kaiwen and Fu, Junchen and Deng, Wenhao and Han, Hu and Jose, Joemon M. and Ge, Xuri},
   year = {2026},
-  note = {Code: https://github.com/GAIR-Lab/Light-MER}
+  eprint = {2607.12787},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.AI},
+  url = {https://arxiv.org/abs/2607.12787},
+  note = {Accepted by ACM MM 2026}
 }
 ```
 
