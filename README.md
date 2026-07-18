@@ -4,6 +4,8 @@ Official implementation for the paper:
 
 **Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?**
 
+<p align="center">🌟 If this project helps or inspires your research, please consider giving us a star! ⭐</p>
+
 <p align="center">
   <a href="https://arxiv.org/abs/2607.12787"><img src="https://img.shields.io/badge/arXiv-Light--MER-b31b1b?style=flat&logo=arxiv&logoColor=white" alt="arXiv Light-MER"></a>
   <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.4%2B-ee4c2c?style=flat&logo=pytorch&logoColor=white" alt="PyTorch 2.4+"></a>
