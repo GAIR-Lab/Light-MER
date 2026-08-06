@@ -184,6 +184,9 @@ parameters are part of the command, not part of the public output name.
     MERGE_LORA=1 \
     bash scripts/inference_stage2_mgrpo.sh
 
+Use TEMPERATURE=0.9 by default. The user can also try TEMPERATURE=0.3 for
+lower-temperature inference.
+
 Run inference preflight with the exact eleven-step list before allocation. Keep
 compact and quiet logging enabled unless the user explicitly asks to inspect
 sample content. DATASET=inferenceData runs all nine MER-UniBench datasets.
