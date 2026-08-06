@@ -34,7 +34,7 @@ If the user invokes $light-mer without a stage or workflow, show:
     3. Stage 1 evaluation
     4. Stage 2 inference
     5. Stage 2 M-GRPO training
-    6. Stage 2 checkpoint-sweep evaluation
+    6. Stage 2 evaluation
 
     Reply with 1-6 and include any known model, dataset, checkpoint, or output paths.
 
@@ -55,8 +55,7 @@ or:
       --steps STEPS \
       --run-tag "${RUN_TAG:-stage2_mgrpo_qwen3_0_6b}"
 
-Replace MODE with train, inference, or eval. For the standard Stage 2 checkpoint
-sweep, set STEPS to 50,500,1000,1500,2000,2500,3000,3500,4000,4500,5000. Exit code 2 means resources are missing and
+Replace MODE with train, inference, or eval. For the standard Stage 2 checkpoints, set STEPS to 50,500,1000,1500,2000,2500,3000,3500,4000,4500,5000. Exit code 2 means resources are missing and
 should trigger deployment, not a generic failure response.
 
 Keep Stage 2 names stable and stage-level: use checkpoints/stage2-mgrpo-qwen3-0.6b for checkpoints
@@ -106,7 +105,7 @@ and the selected evaluation datasets.
     bash scripts/inference_stage1_swdh.sh
 
 Run separate jobs per repeat and epoch unless the user explicitly requests a
-serial sweep.
+serial epoch loop.
 
 ### Evaluate
 
@@ -117,11 +116,11 @@ Require inference outputs, Qwen2.5-7B-Instruct, and Emotion Wheel resources.
 
 ## Stage 2
 
-The Stage 2 checkpoint sweep is hosted in the public model repository:
+The Stage 2 M-GRPO checkpoints are hosted in the public model repository:
 
     https://huggingface.co/kevin233333/Light-MER/tree/main/stage2-mgrpo-qwen3-0.6b
 
-If it is missing, ask whether to download or symlink the released sweep to
+If it is missing, ask whether to download or symlink the released checkpoints to
 checkpoints/stage2-mgrpo-qwen3-0.6b, set STAGE2_CKPT_ROOT to an existing local
 directory, or train Stage 2 first. Never copy checkpoints into normal Git and
 never silently fall back to Stage 1 weights.
@@ -138,7 +137,7 @@ formal training. The smoke test must exercise loading, generation, forward,
 backward, optimizer, and checkpoint writing. Never use smoke artifacts for
 formal inference.
 
-The standard checkpoint sweep is produced by one 5000-step run. The config saves
+The standard Stage 2 checkpoints are produced by one 5000-step run. The config saves
 step 50 explicitly with save_steps=[50], then saves every 500 steps with
 save_interval=500, so all public Stage 2 checkpoints come from the same training
 trajectory.
@@ -171,7 +170,7 @@ directory change the experiment.
 
 ### Run Stage 2 inference
 
-Run the Stage 2 checkpoint sweep with explicit generation parameters. These
+Run inference over the Stage 2 M-GRPO checkpoints with explicit generation parameters. These
 parameters are part of the command, not part of the public output name.
 
     STAGE2_CKPT_ROOT=checkpoints/stage2-mgrpo-qwen3-0.6b \
@@ -190,7 +189,7 @@ compact and quiet logging enabled unless the user explicitly asks to inspect
 sample content. DATASET=inferenceData runs all nine MER-UniBench datasets.
 
 The Python entry point can load all eleven checkpoints sequentially in one
-process. If the user wants to parallelize the sweep, split the checkpoint range
+process. If the user wants to parallelize inference, split the checkpoint range
 into independent jobs according to their local hardware and scheduler policy,
 while keeping the same checkpoint root, result root, run tag, and generation
 parameters for every job.
@@ -210,14 +209,14 @@ Wheel resources.
 
 Run eval preflight with the exact eleven-step list first. The wrapper creates
 missing Qwen label-extraction caches, then summarizes Emotion Wheel metrics
-across all nine datasets. The official sweep summary selects the best
-checkpoint separately for each dataset; it is not the score of one shared
+across all nine datasets. The official summary selects the best checkpoint
+separately for each dataset; it is not the score of one shared
 checkpoint. If the user asks for the best single checkpoint, use the same
 official scorer with its test_epochs filter for each step, average the nine
 primary metrics per step, and report both results without conflating them.
 
 Only evaluate NPZ files generated locally by this repository or otherwise
-trusted by the user. A complete standard sweep contains 99 raw NPZ files,
+trusted by the user. A complete standard Stage 2 evaluation over all checkpoints contains 99 raw NPZ files,
 99 openset caches, and 44 sentiment caches: 242 NPZ files total. Treat missing
 files, duplicate steps, or an evaluation dependency that ran early as a failed
 run.

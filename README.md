@@ -27,7 +27,7 @@ This repository hosts the Light-MER open-source release, covering Stage 1 SWD-H 
 
 ## 📰 News
 
-- **August 6, 2026**: Stage 2 M-GRPO checkpoint sweep released on [Hugging Face](https://huggingface.co/kevin233333/Light-MER/tree/main/stage2-mgrpo-qwen3-0.6b).
+- **August 6, 2026**: Stage 2 M-GRPO checkpoints released on [Hugging Face](https://huggingface.co/kevin233333/Light-MER/tree/main/stage2-mgrpo-qwen3-0.6b).
 - **August 6, 2026**: Stage 2 M-GRPO training, inference, evaluation, and agent-skill support released.
 - **July 14, 2026**: Stage 1 SWD-H student checkpoints and Stage 1 agent skills released.
 - **July 14, 2026**: README and public config aligned with the Light-MER paper; core model source is included in the release.
@@ -40,7 +40,7 @@ This repository hosts the Light-MER open-source release, covering Stage 1 SWD-H 
 - [x] Release Light-MER teacher and Stage 1 SWD-H student checkpoints. (Completed on July 14, 2026)
 - [x] Release Codex and Claude Code Stage 1 deployment skills. (Completed on July 14, 2026)
 - [x] Release Stage 2 M-GRPO refinement code and instructions. (Completed on August 6, 2026)
-- [x] Release Stage 2 M-GRPO checkpoint sweep. (Completed on August 6, 2026)
+- [x] Release Stage 2 M-GRPO checkpoints. (Completed on August 6, 2026)
 
 **If you encounter any questions or discover a bug within the paper or code, please do not hesitate to open an issue or submit a pull request.**
 
@@ -51,7 +51,7 @@ This repository hosts the Light-MER open-source release, covering Stage 1 SWD-H 
 | Stage 1 | Released | SWD-H distillation code for Qwen3-8B teacher to Qwen3-0.6B student |
 | Stage 2 | Released | M-GRPO training, inference, and evaluation code/instructions |
 | Evaluation | Released | Stage 1 and Stage 2 inference scripts, label extraction, and Emotion Wheel metrics |
-| Model Checkpoint | Released | Teacher, Stage 1 SWD-H, and Stage 2 M-GRPO checkpoint sweep released |
+| Model Checkpoint | Released | Teacher, Stage 1 SWD-H, and Stage 2 M-GRPO checkpoints released |
 | AI Agent Skills | Released | Codex and Claude Code helpers with Stage 1/2 train, inference, and evaluation preflight checks |
 
 ## 🛠️ AI Agent Skills
@@ -136,7 +136,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Hardware requirements depend on the selected pretrained models, checkpoint sweep size, batch settings, and local software stack. Adjust training and inference parallelism according to your available GPUs and scheduler policy.
+Hardware requirements depend on the selected pretrained models, number of Stage 2 checkpoints, batch settings, and local software stack. Adjust training and inference parallelism according to your available GPUs and scheduler policy.
 
 ## 📦 Dataset
 
@@ -216,7 +216,7 @@ models/
 |---|---|---|
 | Light-MER Teacher | Qwen3-8B teacher checkpoint | [Hugging Face](https://huggingface.co/kevin233333/Light-MER/blob/main/light-mer-teacher-qwen3-8b.pth) |
 | Light-MER Stage 1 SWD-H | Qwen3-0.6B student after SWD-H distillation | [Hugging Face](https://huggingface.co/kevin233333/Light-MER/tree/main/stage1-swdh-qwen3-0.6b) |
-| Light-MER Stage 2 M-GRPO | Qwen3-0.6B student checkpoint sweep after M-GRPO refinement | [Hugging Face](https://huggingface.co/kevin233333/Light-MER/tree/main/stage2-mgrpo-qwen3-0.6b) |
+| Light-MER Stage 2 M-GRPO | Qwen3-0.6B student checkpoints after M-GRPO refinement | [Hugging Face](https://huggingface.co/kevin233333/Light-MER/tree/main/stage2-mgrpo-qwen3-0.6b) |
 
 ## 🚀 Getting Started
 
@@ -261,7 +261,7 @@ Released checkpoints are available on [Hugging Face](https://huggingface.co/kevi
 checkpoints/stage2-mgrpo-qwen3-0.6b/
 ```
 
-Do not include `checkpoint_final_*` in the sweep directory.
+Do not include `checkpoint_final_*` in this checkpoint directory.
 
 The public config uses the Stage 2 training setting: four completions,
 temperature 0.9, KL coefficient 1.0, learning rate 1e-7, `max_steps=5000`,
@@ -277,11 +277,11 @@ TEST_EPOCH=60 \
 bash scripts/inference_stage1_swdh.sh
 ```
 
-This runs one task for one model/config, one repeat, and one epoch. To run a local serial sweep, set `TEST_EPOCHS=5-60` and `SKIP_EPOCH=5` explicitly.
+This runs one task for one model/config, one repeat, and one epoch. To run a local serial epoch loop, set `TEST_EPOCHS=5-60` and `SKIP_EPOCH=5` explicitly.
 
 ### ⚡ 5. Run Stage 2 Inference
 
-Run the Stage 2 checkpoint sweep with stable Stage 2 naming. Generation
+Run Stage 2 inference over the released M-GRPO checkpoints with stable Stage 2 naming. Generation
 parameters are explicit command settings and are not encoded into directory or
 run-tag names:
 
