@@ -2,7 +2,7 @@
 
 本文件用于判断 Stage 2 是否已经可以公开到 GitHub。所有路径均相对于仓库根目录。
 
-当前结论：**可以推送 Stage 2 code/instructions**。截至 2026-08-06，Stage 2 源码、公开命名、Skill、preflight、README 和基础安全检查已对齐；checkpoint 仍通过 Hugging Face 或其他模型存储单独发布。
+当前结论：**Stage 2 code/instructions 和 checkpoint sweep 均已准备公开**。截至 2026-08-06，Stage 2 源码、公开命名、Skill、preflight、README 和基础安全检查已对齐；checkpoint sweep 已通过 Hugging Face 单独发布，GitHub 仍不包含权重文件。
 
 ## 1. 当前判断
 
@@ -12,7 +12,7 @@
 - [x] 基础静态检查本次已通过：bash syntax、Python compileall、`tests.test_mgrpo_reward`、Codex skill validation 和 Claude skill validation。
 - [x] Stage 2 公开命名已和 Stage 1 风格对齐：checkpoint 目录使用 `checkpoints/stage2-mgrpo-qwen3-0.6b`，结果 run tag 使用 `stage2_mgrpo_qwen3_0_6b`。
 - [x] 公开文档和 skill 不再把 temperature、top-p 或 LoRA implementation option 编进 Stage 2 名字里。
-- [x] README 的 News、TODO 和 Release Status 已更新为 Stage 2 code/instructions released。
+- [x] README 的 News、TODO、Release Status 和 Model Zoo 已更新为 Stage 2 code/instructions + checkpoint sweep released。
 - [x] 完整复现已由项目维护者确认完成：Stage 2 checkpoint sweep 训练、推理和 evaluation 已跑通。
 
 ## 2. Stage 2 标准公开口径
@@ -52,7 +52,7 @@ Stage 2 公开时只使用稳定 stage-level 命名。实验参数写在命令�
 - [x] `.gitignore`
 - [x] `LICENSE`
 
-发布说明：README News/TODO/Release Status 可以写 Stage 2 code/instructions released；Stage 2 checkpoint 仍保持 coming soon，直到权重单独发布。
+发布说明：README News/TODO/Release Status/Model Zoo 可以写 Stage 2 code/instructions 和 checkpoint sweep released；checkpoint 权重只放 Hugging Face，不进 GitHub。
 
 ## 4. Stage 2 应包含的源码
 
@@ -134,7 +134,7 @@ README 使用的公开图片也应保留：
 - [x] prompts、生成文本、样本 ID、原始逐样本标签。
 - [x] TensorBoard/W&B 文件、stdout/stderr、scheduler 日志、debug log、job ID 和节点信息。
 
-需要公开 checkpoint 时，放 Hugging Face 或独立模型存储，并在 README/model card 写清楚 license、上游模型许可、文件大小、SHA-256、对应 Git commit、step 和配置版本。
+公开 checkpoint 已放 Hugging Face 或独立模型存储；README/model card 应写清楚 license、上游模型许可、文件大小、SHA-256、对应 Git commit、step 和配置版本。
 
 ### 隐私和安全
 
@@ -187,4 +187,4 @@ python /path/to/skill-creator/scripts/quick_validate.py codex/skills/light-mer
 - [x] Stage 2 code/instructions 的阻塞项已完成，可以 commit 和 push。
 - [x] 推送前必须人工确认 `git diff`、`git status --short` 和 staged file list。
 - [x] Codex Skill 和 Claude Code Skill 的 Stage 2 标准流程必须一致。
-- [x] 本次不再保持 Stage1-only；README 和 News 已按 Stage 2 code/instructions released 更新。
+- [x] 本次不再保持 Stage1-only；README 和 News 已按 Stage 2 code/instructions + checkpoint sweep released 更新。

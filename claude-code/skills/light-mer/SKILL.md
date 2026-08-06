@@ -117,10 +117,14 @@ Require inference outputs, Qwen2.5-7B-Instruct, and Emotion Wheel resources.
 
 ## Stage 2
 
-The Stage 2 checkpoint is not hosted in the public model repository yet. If it
-is missing, ask whether the user has a local Stage 2 checkpoint directory or
-wants to train Stage 2 first. Do not invent a download URL or silently fall
-back to Stage 1 weights.
+The Stage 2 checkpoint sweep is hosted in the public model repository:
+
+    https://huggingface.co/kevin233333/Light-MER/tree/main/stage2-mgrpo-qwen3-0.6b
+
+If it is missing, ask whether to download or symlink the released sweep to
+checkpoints/stage2-mgrpo-qwen3-0.6b, set STAGE2_CKPT_ROOT to an existing local
+directory, or train Stage 2 first. Never copy checkpoints into normal Git and
+never silently fall back to Stage 1 weights.
 
 ### Train M-GRPO
 

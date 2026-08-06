@@ -27,6 +27,7 @@ This repository hosts the Light-MER open-source release, covering Stage 1 SWD-H 
 
 ## 📰 News
 
+- **August 6, 2026**: Stage 2 M-GRPO checkpoint sweep released on [Hugging Face](https://huggingface.co/kevin233333/Light-MER/tree/main/stage2-mgrpo-qwen3-0.6b).
 - **August 6, 2026**: Stage 2 M-GRPO training, inference, evaluation, and agent-skill support released.
 - **July 14, 2026**: Stage 1 SWD-H student checkpoints and Stage 1 agent skills released.
 - **July 14, 2026**: README and public config aligned with the Light-MER paper; core model source is included in the release.
@@ -39,8 +40,7 @@ This repository hosts the Light-MER open-source release, covering Stage 1 SWD-H 
 - [x] Release Light-MER teacher and Stage 1 SWD-H student checkpoints. (Completed on July 14, 2026)
 - [x] Release Codex and Claude Code Stage 1 deployment skills. (Completed on July 14, 2026)
 - [x] Release Stage 2 M-GRPO refinement code and instructions. (Completed on August 6, 2026)
-- [ ] Release Stage 2 M-GRPO checkpoint. (Coming soon)
-- [ ] Release additional reproducibility notes and benchmark logs. (Coming soon)
+- [x] Release Stage 2 M-GRPO checkpoint sweep. (Completed on August 6, 2026)
 
 **If you encounter any questions or discover a bug within the paper or code, please do not hesitate to open an issue or submit a pull request.**
 
@@ -51,7 +51,7 @@ This repository hosts the Light-MER open-source release, covering Stage 1 SWD-H 
 | Stage 1 | Released | SWD-H distillation code for Qwen3-8B teacher to Qwen3-0.6B student |
 | Stage 2 | Released | M-GRPO training, inference, and evaluation code/instructions |
 | Evaluation | Released | Stage 1 and Stage 2 inference scripts, label extraction, and Emotion Wheel metrics |
-| Model Checkpoint | PARTIALLY RELEASED | Teacher and Stage 1 SWD-H checkpoints released; Stage 2 checkpoint coming soon |
+| Model Checkpoint | Released | Teacher, Stage 1 SWD-H, and Stage 2 M-GRPO checkpoint sweep released |
 | AI Agent Skills | Released | Codex and Claude Code helpers with Stage 1/2 train, inference, and evaluation preflight checks |
 
 ## 🛠️ AI Agent Skills
@@ -216,7 +216,7 @@ models/
 |---|---|---|
 | Light-MER Teacher | Qwen3-8B teacher checkpoint | [Hugging Face](https://huggingface.co/kevin233333/Light-MER/blob/main/light-mer-teacher-qwen3-8b.pth) |
 | Light-MER Stage 1 SWD-H | Qwen3-0.6B student after SWD-H distillation | [Hugging Face](https://huggingface.co/kevin233333/Light-MER/tree/main/stage1-swdh-qwen3-0.6b) |
-| Light-MER Stage 2 M-GRPO | Final student after M-GRPO refinement | |
+| Light-MER Stage 2 M-GRPO | Qwen3-0.6B student checkpoint sweep after M-GRPO refinement | [Hugging Face](https://huggingface.co/kevin233333/Light-MER/tree/main/stage2-mgrpo-qwen3-0.6b) |
 
 ## 🚀 Getting Started
 
@@ -255,7 +255,7 @@ CONDA_ENV_NAME=swdh-stage1 \
 bash scripts/train_stage2_mgrpo.sh
 ```
 
-Place or symlink the eleven periodic checkpoints into:
+Released checkpoints are available on [Hugging Face](https://huggingface.co/kevin233333/Light-MER/tree/main/stage2-mgrpo-qwen3-0.6b). Download or symlink the eleven periodic checkpoints into:
 
 ```text
 checkpoints/stage2-mgrpo-qwen3-0.6b/
@@ -345,7 +345,7 @@ export SWDH_EMOTION_WHEEL_ROOT=/path/to/emotion_wheel
 export SWDH_RESULT_ROOT=/path/to/results
 export LIGHT_MER_ROOT=/path/to/Light-MER
 export STAGE1_CKPT=/path/to/checkpoint_000025_loss_1.549.pth
-export STAGE2_CKPT_ROOT=/path/to/stage2/checkpoints
+export STAGE2_CKPT_ROOT=/path/to/stage2-mgrpo-qwen3-0.6b
 export STAGE2_RESULT_ROOT=/path/to/stage2/results
 export LIGHT_MER_EVAL_SEED=42
 ```
