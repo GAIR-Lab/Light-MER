@@ -2,7 +2,7 @@ model:
   arch: affectgpt
   model_type: pretrain_vicuna
 
-  # These flags match the final v10 training configuration.
+  # These flags define the public Stage 2 M-GRPO training setup.
   frozen_video_proj: False
   frozen_video_Qformer: False
   frozen_audio_Qformer: False

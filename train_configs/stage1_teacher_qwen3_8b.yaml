@@ -112,7 +112,7 @@ inference:
       image_size: 224
 
   ######################################################
-  # NOTE: 为了避免出错，设置为与 emercoarse 或者 mer2023 一致就可以
+  # Set this to the multimodal input type used by the selected dataset/config.
   face_or_frame: 'xxx'
   ######################################################
 

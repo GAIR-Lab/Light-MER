@@ -30,7 +30,7 @@ fi
 
 if [ ! -d "${STAGE2_CKPT_ROOT}" ]; then
   echo "Stage 2 checkpoint directory not found: ${STAGE2_CKPT_ROOT}" >&2
-  echo "Set STAGE2_CKPT_ROOT=/path/to/stage2/checkpoints." >&2
+  echo "Set STAGE2_CKPT_ROOT=/path/to/stage2-mgrpo-qwen3-0.6b." >&2
   exit 1
 fi
 

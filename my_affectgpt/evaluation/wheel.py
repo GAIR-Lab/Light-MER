@@ -238,7 +238,7 @@ def read_format2raws():
 ##################################################
 # 建立临时的逆向过程
 ##################################################
-def read_raw2formats_lz():
+def read_raw2formats():
     
     format_path = os.path.join(config.EMOTION_WHEEL_ROOT, 'format.csv')
     raws = func_read_key_from_csv(format_path, 'name')
@@ -253,7 +253,7 @@ def read_raw2formats_lz():
     return raw2formats
 
 
-def read_synonym_onerun_lz(runname='run1'):
+def read_synonym_onerun(runname='run1'):
     label2synonym = {}
     synonym_path = os.path.join(config.EMOTION_WHEEL_ROOT, 'synonym.xlsx')
     df = pd.read_excel(synonym_path)
@@ -275,15 +275,15 @@ def read_synonym_onerun_lz(runname='run1'):
     return label2synonym
 
 # mapping_merge: 实现所有标签 -> emotion wheel 中的标签
-def read_raw2synonym_merge_lz():
-    mapping_run1 = read_synonym_onerun_lz('run1')
-    mapping_run2 = read_synonym_onerun_lz('run2')
-    mapping_run3 = read_synonym_onerun_lz('run3')
-    mapping_run4 = read_synonym_onerun_lz('run4')
-    mapping_run5 = read_synonym_onerun_lz('run5') 
-    mapping_run6 = read_synonym_onerun_lz('run6') 
-    mapping_run7 = read_synonym_onerun_lz('run7') 
-    mapping_run8 = read_synonym_onerun_lz('run8') 
+def read_raw2synonym_merge():
+    mapping_run1 = read_synonym_onerun('run1')
+    mapping_run2 = read_synonym_onerun('run2')
+    mapping_run3 = read_synonym_onerun('run3')
+    mapping_run4 = read_synonym_onerun('run4')
+    mapping_run5 = read_synonym_onerun('run5')
+    mapping_run6 = read_synonym_onerun('run6')
+    mapping_run7 = read_synonym_onerun('run7')
+    mapping_run8 = read_synonym_onerun('run8')
     mapping_merge = func_merge_map(mapping_run1,  mapping_run2)
     mapping_merge = func_merge_map(mapping_merge, mapping_run3)
     mapping_merge = func_merge_map(mapping_merge, mapping_run4)
