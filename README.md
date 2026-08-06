@@ -242,11 +242,14 @@ TEACHER_CKPT=checkpoints/qwen3_8b_teacher.pth \
 bash scripts/train_stage1_swdh.sh
 ```
 
-### 🧭 3. Refine the Student with Stage 2 M-GRPO
+### 🧭 3. Train the Stage 2 M-GRPO Student
 
-Stage 2 starts from the Stage 1 step-25 checkpoint. The standard Stage 2 run is
-5000 optimizer steps and saves checkpoints 50, 500, 1000, 1500, 2000, 2500,
-3000, 3500, 4000, 4500, and 5000 from the same training trajectory.
+Stage 2 trains the SWD-H student with M-GRPO refinement. Skip this training
+step if you want to use the released Stage 2 checkpoints directly.
+
+Stage 2 starts from the Stage 1 step-25 checkpoint. The standard training run
+uses 5000 optimizer steps and saves checkpoints 50, 500, 1000, 1500, 2000,
+2500, 3000, 3500, 4000, 4500, and 5000 from the same training trajectory.
 
 ```bash
 STAGE1_CKPT=checkpoints/stage1-swdh-qwen3-0.6b/checkpoint_000025_loss_1.549.pth \
