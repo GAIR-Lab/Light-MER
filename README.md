@@ -318,8 +318,8 @@ for all nine MER-UniBench datasets.
   <img src="assets/light-mer-main-results.png" alt="Light-MER results on MER-UniBench benchmarks" width="100%">
 </p>
 
-Stage 2 inference is stochastic. Small differences of about
-±0.3% are normal when rerunning inference or Qwen label extraction.
+Inference and Qwen label extraction can be stochastic. Small differences
+of about ±0.3% are normal when rerunning the pipeline.
 
 ## 🛠️ Path Overrides
 
