@@ -296,6 +296,8 @@ MERGE_LORA=1 \
 bash scripts/inference_stage2_mgrpo.sh
 ```
 
+You can also try `TEMPERATURE=0.3` for lower-temperature inference.
+
 #### 3. Evaluate Stage 2
 
 ```bash
