@@ -1,207 +1,231 @@
 ---
 name: light-mer
-description: Deploy, train, infer, and evaluate Light-MER Stage 1 SWD-H workflows. Use when setting up Light-MER local paths, checking required checkpoints/models/datasets, preparing Hugging Face checkpoints, running Stage 1 training, running Stage 1 inference, or evaluating Stage 1 MER-UniBench outputs.
+description: Set up, train, infer, and evaluate Light-MER Stage 1 SWD-H and Stage 2 M-GRPO workflows. Use when deploying Light-MER checkpoints, checking local models or MER datasets, running either training stage, running Stage 2 inference, or evaluating MER-UniBench outputs.
 ---
 
-# Light-MER Stage 1
+# Light-MER
 
-Use this skill to operate the public Light-MER Stage 1 SWD-H release. Keep the workflow practical: if the user only invokes the skill, show the Stage 1 menu; otherwise identify whether the user wants **train**, **inference**, or **evaluation**, run the automatic preflight check yourself, deploy missing resources through symlinks or environment variables, and only then run the project scripts.
+Operate the public Light-MER release end to end. Detect the requested stage and
+workflow, run its bundled preflight first, ask for all missing resource paths in
+one concise message, deploy resources with environment variables or symlinks,
+and then run the repository script.
 
-Do not use this skill for Stage 2 M-GRPO implementation, GRPO/RLHF reward code, policy optimization, or private experiment cleanup.
+Never move original checkpoints or datasets. Never copy checkpoints, datasets,
+logs, inference outputs, credentials, or absolute private paths into Git.
 
-## Repository Root
+## Locate the repository
 
-Work from the Light-MER GitHub repo root, identified by these files:
+Identify the repository by train.py, train_stage2_mgrpo.py, and train_configs/.
+Search in this order:
 
-```text
-train.py
-inference_hybird.py
-train_configs/stage1_swdh_qwen3_8b_to_qwen3_0_6b.yaml
-scripts/train_stage1_swdh.sh
-scripts/inference_stage1_swdh.sh
-```
+1. An explicit path from the user.
+2. LIGHT_MER_ROOT.
+3. The current directory and its parents.
 
-If the current directory is not the repo root, locate it before continuing. Never move the user's original checkpoints or datasets. Prefer symlinks into `checkpoints/`, `models/`, or `dataset/`.
+Set LIGHT_MER_ROOT when the skill is installed outside the repository.
 
-## Startup Menu
+## Show the startup menu
 
-If the user invokes the Light-MER skill without choosing a workflow, show this menu and wait for a selection:
+If the user invokes $light-mer without a stage or workflow, show:
 
-```text
-Light-MER Stage 1 menu
-1. Inference: set up or run the released SWD-H student checkpoint.
-2. Train: train Stage 1 SWD-H from a teacher checkpoint.
-3. Evaluation: evaluate existing Stage 1 inference outputs.
+    Light-MER menu
+    1. Stage 1 inference
+    2. Stage 1 SWD-H training
+    3. Stage 1 evaluation
+    4. Stage 2 inference
+    5. Stage 2 M-GRPO training
+    6. Stage 2 checkpoint-sweep evaluation
 
-Reply with 1, 2, or 3. You can include any known local checkpoint, model, dataset, or output paths.
-```
+    Reply with 1-6 and include any known model, dataset, checkpoint, or output paths.
 
-Do not show the menu when the user already asks for train, inference, or evaluation. Continue directly to the matching workflow and automatic preflight.
+If the user names a workflow but not a stage, ask only which stage they mean.
+Otherwise continue directly without showing the menu.
 
-## Decision Flow
+## Run automatic preflight
 
-1. If the user asks to **train**, use the Train workflow.
-2. If the user asks to **infer**, **run inference**, **test checkpoints**, or **evaluate a released Stage 1 checkpoint**, use the Inference workflow.
-3. If the user asks to **evaluate**, first verify inference outputs exist; if not, run or request inference first.
-4. If the user is unclear or only invokes the skill, show the Startup Menu.
+Resolve SKILL_DIR as the directory containing this SKILL.md. Run:
 
-## Automatic Preflight
+    python SKILL_DIR/scripts/stage1_preflight.py MODE --repo-root "$LIGHT_MER_ROOT"
 
-Treat preflight as an internal first step, not as a manual command for the user. Before train, inference, or eval, run the bundled preflight script for the selected mode:
+or:
 
-```bash
-python claude-code/skills/light-mer/scripts/stage1_preflight.py <train|inference|eval>
-```
+    python SKILL_DIR/scripts/stage2_preflight.py MODE \
+      --repo-root "$LIGHT_MER_ROOT" \
+      --dataset "${DATASET:-inferenceData}" \
+      --steps STEPS \
+      --run-tag "${RUN_TAG:-stage2_mgrpo_qwen3_0_6b}"
 
-Use `--json` when you need machine-readable output. The script exits with code `2` when required resources are missing; this is expected and should trigger the resource deployment flow.
+Replace MODE with train, inference, or eval. For the standard Stage 2 checkpoint
+sweep, set STEPS to 50,500,1000,1500,2000,2500,3000,3500,4000,4500,5000. Exit code 2 means resources are missing and
+should trigger deployment, not a generic failure response.
 
-When preflight reports missing resources, summarize the missing checkpoint/model/dataset/output paths and ask the user for those paths in one concise batch. If the user provides paths, deploy them with symlinks by default:
+Keep Stage 2 names stable and stage-level: use checkpoints/stage2-mgrpo-qwen3-0.6b for checkpoints
+and stage2_mgrpo_qwen3_0_6b for the result run tag. Do not encode generation parameters
+or implementation options in directory names, run tags, README headings, or skill
+menu labels.
 
-```bash
-mkdir -p checkpoints models dataset
-ln -s /path/to/source checkpoints/name-or-directory
-```
+Add --require-cuda when preflight runs inside the GPU allocation that will
+execute the workflow. Without it, an unavailable GPU is reported as a warning
+so deployment can still be prepared on a login node.
 
-Use copying only when the user explicitly asks for a physical copy. Do not overwrite existing files or links without asking.
+Preflight redacts local absolute paths by default. Use --show-paths only when
+the user explicitly needs the full local path for troubleshooting.
 
-## Train Workflow
+When paths are missing:
 
-Training Stage 1 requires:
+1. Ask for all missing paths together.
+2. Prefer environment variables when resources remain outside the repository.
+3. Otherwise create symlinks under models/, dataset/, or checkpoints/.
+4. Never overwrite an existing path without permission.
+5. Rerun preflight and continue only after it passes.
 
-```text
-train_configs/stage1_swdh_qwen3_8b_to_qwen3_0_6b.yaml
-checkpoints/qwen3_8b_teacher.pth or TEACHER_CKPT=/path/to/teacher.pth
-models/Qwen3-8B/
-models/Qwen3-0.6B/
-models/clip-vit-large-patch14/
-models/clip-vit-base-patch16/
-models/chinese-hubert-large/
-models/chinese-hubert-base/
-dataset/mer2025-dataset/
-```
+## Stage 1
 
-The MER2025 training dataset should include `video/`, `audio/`, `openface_face/`, `subtitle_chieng.csv`, `track2_train_mercaptionplus.csv`, and `track3_train_mercaptionplus.csv`.
+### Train SWD-H
 
-If the teacher checkpoint is missing, ask whether to use a local checkpoint path or the released Hugging Face teacher checkpoint:
+Require the Qwen3-8B teacher checkpoint, Qwen3-8B and Qwen3-0.6B model
+directories, CLIP Large/Base, HuBERT Large/Base, and MER-Caption+.
 
-```text
-https://huggingface.co/kevin233333/Light-MER/blob/main/light-mer-teacher-qwen3-8b.pth
-```
+    TEACHER_CKPT=checkpoints/qwen3_8b_teacher.pth \
+    CONDA_ENV_NAME=swdh-stage1 \
+    bash scripts/train_stage1_swdh.sh
 
-After preflight passes, run:
+Use the released teacher checkpoint when requested:
 
-```bash
-CONDA_ENV_NAME=swdh-stage1 \
-TEACHER_CKPT=checkpoints/qwen3_8b_teacher.pth \
-bash scripts/train_stage1_swdh.sh
-```
+    https://huggingface.co/kevin233333/Light-MER/blob/main/light-mer-teacher-qwen3-8b.pth
 
-For Slurm clusters, use:
+### Infer
 
-```bash
-CONDA_ENV_NAME=swdh-stage1 \
-TEACHER_CKPT=checkpoints/qwen3_8b_teacher.pth \
-sbatch scripts/train_stage1_swdh.sh
-```
+Require a Stage 1 checkpoint directory, Qwen3-0.6B, CLIP Base, HuBERT Base,
+and the selected evaluation datasets.
 
-Training outputs are expected under:
+    CKPT_ROOT=checkpoints/stage1-swdh-qwen3-0.6b \
+    REPEAT=1 \
+    BASE_ROOT=output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results \
+    TEST_EPOCH=60 \
+    bash scripts/inference_stage1_swdh.sh
 
-```text
-output/stage1_swdh_qwen3_8b_to_qwen3_0_6b/
-```
+Run separate jobs per repeat and epoch unless the user explicitly requests a
+serial sweep.
 
-## Inference Workflow
+### Evaluate
 
-Inference requires a Stage 1 student checkpoint directory, not a teacher checkpoint. Prefer the released Hugging Face Stage 1 directory:
+Require inference outputs, Qwen2.5-7B-Instruct, and Emotion Wheel resources.
 
-```text
-https://huggingface.co/kevin233333/Light-MER/tree/main/stage1-swdh-qwen3-0.6b
-```
+    bash scripts/eval_stage1_swdh.sh \
+      --base-root output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results
 
-Recommended local layout:
+## Stage 2
 
-```text
-checkpoints/stage1-swdh-qwen3-0.6b/
-├── checkpoint_000005_loss_2.097.pth
-├── ...
-└── checkpoint_000060_loss_1.291.pth
-```
+The Stage 2 checkpoint is not hosted in the public model repository yet. If it
+is missing, ask whether the user has a local Stage 2 checkpoint directory or
+wants to train Stage 2 first. Do not invent a download URL or silently fall
+back to Stage 1 weights.
 
-Inference also needs:
+### Train M-GRPO
 
-```text
-models/Qwen3-0.6B/
-models/clip-vit-base-patch16/
-models/chinese-hubert-base/
-dataset/<evaluation dataset folders>
-```
+Initialize every Stage 2 run from the Stage 1 SWD-H step-25 checkpoint. Do not
+resume the long run from a Stage 2 checkpoint and do not substitute a teacher
+checkpoint. The entry point validates matching LoRA and multimodal projection
+weights.
 
-After preflight passes, run one task for one model/config, one repeat, and one epoch. This mirrors the original inference granularity without a Slurm array:
+Run preflight, then a one-step smoke test in a separate output directory before
+formal training. The smoke test must exercise loading, generation, forward,
+backward, optimizer, and checkpoint writing. Never use smoke artifacts for
+formal inference.
 
-```bash
-CKPT_ROOT=checkpoints/stage1-swdh-qwen3-0.6b \
-REPEAT=1 \
-BASE_ROOT=output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results \
-TEST_EPOCH=60 \
-CONDA_ENV_NAME=swdh-stage1 \
-bash scripts/inference_stage1_swdh.sh
-```
+The standard checkpoint sweep is produced by one 5000-step run. The config saves
+step 50 explicitly with save_steps=[50], then saves every 500 steps with
+save_interval=500, so all public Stage 2 checkpoints come from the same training
+trajectory.
 
-For a different repeat or epoch, change `REPEAT`, `BASE_ROOT`, and `TEST_EPOCH` together. For cluster runs, submit separate jobs for each repeat/epoch instead of using a Slurm array in the public template.
+    STAGE1_CKPT=checkpoints/stage1-swdh-qwen3-0.6b/checkpoint_000025_loss_1.549.pth \
+    OUTPUT_DIR=output/stage2_mgrpo_qwen3_0_6b \
+    CONDA_ENV_NAME=swdh-stage1 \
+    bash scripts/train_stage2_mgrpo.sh
 
-To run a local serial sweep explicitly:
+Keep the output directory outside normal Git tracking. Build a separate
+checkpoint directory with symlinks, not copied weights. It must use the public
+Stage 2 checkpoint name checkpoints/stage2-mgrpo-qwen3-0.6b and contain exactly these periodic
+files:
 
-```bash
-CKPT_ROOT=checkpoints/stage1-swdh-qwen3-0.6b \
-REPEAT=1 \
-BASE_ROOT=output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results \
-TEST_EPOCHS=5-60 \
-SKIP_EPOCH=5 \
-CONDA_ENV_NAME=swdh-stage1 \
-bash scripts/inference_stage1_swdh.sh
-```
+    checkpoint_000050_grpo.pth
+    checkpoint_000500_grpo.pth
+    checkpoint_001000_grpo.pth
+    checkpoint_001500_grpo.pth
+    checkpoint_002000_grpo.pth
+    checkpoint_002500_grpo.pth
+    checkpoint_003000_grpo.pth
+    checkpoint_003500_grpo.pth
+    checkpoint_004000_grpo.pth
+    checkpoint_004500_grpo.pth
+    checkpoint_005000_grpo.pth
 
-For a subset of datasets:
+Do not link checkpoint_final_*. The inference entry point scans every periodic
+checkpoint between START_STEP and END_STEP, so extra files in the checkpoint
+directory change the experiment.
 
-```bash
-DATASET=MER2023,MELD \
-CKPT_ROOT=checkpoints/stage1-swdh-qwen3-0.6b \
-REPEAT=1 \
-BASE_ROOT=output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results \
-TEST_EPOCH=60 \
-bash scripts/inference_stage1_swdh.sh
-```
+### Run Stage 2 inference
 
-Inference outputs are expected under:
+Run the Stage 2 checkpoint sweep with explicit generation parameters. These
+parameters are part of the command, not part of the public output name.
 
-```text
-output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat<repeat>/results-<dataset>/
-```
+    STAGE2_CKPT_ROOT=checkpoints/stage2-mgrpo-qwen3-0.6b \
+    START_STEP=50 \
+    END_STEP=5000 \
+    DATASET=inferenceData \
+    STAGE2_RESULT_ROOT=output_stage2_mgrpo/results \
+    RUN_TAG=stage2_mgrpo_qwen3_0_6b \
+    TEMPERATURE=0.9 \
+    TOP_P=0.9 \
+    MERGE_LORA=1 \
+    bash scripts/inference_stage2_mgrpo.sh
 
-## Evaluation Workflow
+Run inference preflight with the exact eleven-step list before allocation. Keep
+compact and quiet logging enabled unless the user explicitly asks to inspect
+sample content. DATASET=inferenceData runs all nine MER-UniBench datasets.
 
-Evaluation requires inference outputs and the Qwen2.5 label extractor:
+The Python entry point can load all eleven checkpoints sequentially in one
+process. If the user wants to parallelize the sweep, split the checkpoint range
+into independent jobs according to their local hardware and scheduler policy,
+while keeping the same checkpoint root, result root, run tag, and generation
+parameters for every job.
 
-```text
-models/Qwen2.5-7B-Instruct/
-emotion_wheel/
-output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat<repeat>/results-<dataset>/
-```
+Use job-specific START_STEP and END_STEP values only to partition the same
+standard checkpoint list. Do not start evaluation until every inference job
+exits successfully.
 
-Run:
+### Evaluate Stage 2
 
-```bash
-CONDA_ENV_NAME=swdh-stage1 \
-bash scripts/eval_stage1_swdh.sh \
-  --base-root output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results
-```
+Require all requested raw inference NPZ files, Qwen2.5-7B-Instruct, and Emotion
+Wheel resources.
 
-Use `--debug` only for smoke checks that should avoid expensive label extraction where possible.
+    bash scripts/eval_stage2_mgrpo.sh \
+      --base-root output_stage2_mgrpo/results \
+      --run-tag stage2_mgrpo_qwen3_0_6b
 
-## Deployment Rules
+Run eval preflight with the exact eleven-step list first. The wrapper creates
+missing Qwen label-extraction caches, then summarizes Emotion Wheel metrics
+across all nine datasets. The official sweep summary selects the best
+checkpoint separately for each dataset; it is not the score of one shared
+checkpoint. If the user asks for the best single checkpoint, use the same
+official scorer with its test_epochs filter for each step, average the nine
+primary metrics per step, and report both results without conflating them.
 
-- Use environment variables when the user wants to keep resources outside the repo: `SWDH_MODEL_ROOT`, `SWDH_DATASET_ROOT`, `SWDH_EMOTION_WHEEL_ROOT`, `SWDH_RESULT_ROOT`, `TEACHER_CKPT`, `CKPT_ROOT`, `CONDA_ENV_NAME`.
-- Use symlinks when the user wants standard repo-relative paths.
-- Do not commit large checkpoints, datasets, logs, or private absolute paths to GitHub.
-- Do not edit `config.py` for local paths unless the user explicitly asks; prefer env vars.
-- If a script fails, inspect the first missing path or import error, fix the environment/resource issue, and rerun the smallest command that validates the fix.
+Only evaluate NPZ files generated locally by this repository or otherwise
+trusted by the user. A complete standard sweep contains 99 raw NPZ files,
+99 openset caches, and 44 sentiment caches: 242 NPZ files total. Treat missing
+files, duplicate steps, or an evaluation dependency that ran early as a failed
+run.
+
+## Deployment rules
+
+- Use LIGHT_MER_ROOT, SWDH_MODEL_ROOT, SWDH_DATASET_ROOT,
+  SWDH_EMOTION_WHEEL_ROOT, TEACHER_CKPT, STAGE1_CKPT, STAGE2_CKPT_ROOT, and
+  STAGE2_RESULT_ROOT instead of editing private paths into source files.
+- Keep model weights on Hugging Face or local storage, never in normal Git.
+- Keep result NPZ files, logs, scheduler output, local notes, and datasets untracked.
+- Run the smallest preflight or smoke test after fixing a path or dependency.
+- Before publishing changes, run OPEN_SOURCE_CHECKLIST.md, the repository
+  privacy scan, and inspect git status so local research notes are not staged.
+- Never commit or push Stage 2 release changes without explicit user approval.

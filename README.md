@@ -19,14 +19,15 @@ Official implementation for the paper:
   <img src="assets/light-mer-overview.png" alt="Light-MER Stage 1 overview: a large model becomes a small but strong student, and a large teacher teaches a small student through SWD-H." width="82%">
 </p>
 
-> Light-MER codebase for Stage 1 SWD-H distillation. Stage 2 M-GRPO is coming soon.
+> Light-MER codebase for Stage 1 SWD-H distillation and Stage 2 M-GRPO refinement.
 
 Light-MER revisits generative multimodal emotion recognition (MER) from an efficiency perspective. Instead of deploying a large 7B/8B multimodal emotion language model, Light-MER transfers the multimodal emotion reasoning ability of a strong teacher into a sub-1B deployment model.
 
-This repository hosts the Stage 1 SWD-H open-source release. Stage 2 M-GRPO code and checkpoints will be added in a future update according to the roadmap below.
+This repository hosts the Light-MER open-source release, covering Stage 1 SWD-H distillation and Stage 2 M-GRPO refinement in one codebase.
 
 ## 📰 News
 
+- **August 6, 2026**: Stage 2 M-GRPO training, inference, evaluation, and agent-skill support released.
 - **July 14, 2026**: Stage 1 SWD-H student checkpoints and Stage 1 agent skills released.
 - **July 14, 2026**: README and public config aligned with the Light-MER paper; core model source is included in the release.
 - **July 14, 2026**: Stage 1 SWD-H training, inference, and evaluation code released.
@@ -37,7 +38,7 @@ This repository hosts the Stage 1 SWD-H open-source release. Stage 2 M-GRPO code
 - [x] Release Stage 1 SWD-H training, inference, and evaluation code. (Completed on July 14, 2026)
 - [x] Release Light-MER teacher and Stage 1 SWD-H student checkpoints. (Completed on July 14, 2026)
 - [x] Release Codex and Claude Code Stage 1 deployment skills. (Completed on July 14, 2026)
-- [ ] Release Stage 2 M-GRPO refinement code and instructions. (Coming soon)
+- [x] Release Stage 2 M-GRPO refinement code and instructions. (Completed on August 6, 2026)
 - [ ] Release Stage 2 M-GRPO checkpoint. (Coming soon)
 - [ ] Release additional reproducibility notes and benchmark logs. (Coming soon)
 
@@ -48,14 +49,14 @@ This repository hosts the Stage 1 SWD-H open-source release. Stage 2 M-GRPO code
 | Component | Status | Notes |
 |---|---|---|
 | Stage 1 | Released | SWD-H distillation code for Qwen3-8B teacher to Qwen3-0.6B student |
-| Stage 2 | COMING SOON | M-GRPO refinement will be released in a future update |
-| Evaluation | Released | Inference scripts, label extraction, and Emotion Wheel metrics |
+| Stage 2 | Released | M-GRPO training, inference, and evaluation code/instructions |
+| Evaluation | Released | Stage 1 and Stage 2 inference scripts, label extraction, and Emotion Wheel metrics |
 | Model Checkpoint | PARTIALLY RELEASED | Teacher and Stage 1 SWD-H checkpoints released; Stage 2 checkpoint coming soon |
-| AI Agent Skills | Released | Codex and Claude Code helpers with Stage 1 train, inference, and evaluation preflight checks |
+| AI Agent Skills | Released | Codex and Claude Code helpers with Stage 1/2 train, inference, and evaluation preflight checks |
 
 ## 🛠️ AI Agent Skills
 
-Stage 1 deployment helpers are included for both Codex and Claude Code. After installation, start the skill with one prompt; if no workflow is specified, the skill opens a Stage 1 menu and then automatically checks required checkpoints, pretrained models, datasets, config files, and inference outputs before running project scripts.
+Deployment helpers are included for both Codex and Claude Code. After installation, start the skill with one prompt; if no workflow is specified, it opens a Stage 1/2 menu and automatically checks checkpoints, pretrained models, datasets, configs, and inference outputs before running project scripts.
 
 <details>
 <summary><strong>Codex</strong></summary>
@@ -68,7 +69,7 @@ mkdir -p ~/.codex/skills
 cp -r Light-MER/codex/skills/light-mer ~/.codex/skills/
 ```
 
-After installation, open a new Codex session and invoke the installed Light-MER skill. Codex will open a Stage 1 menu for inference, training, or evaluation. The preflight checker runs inside the selected workflow. If anything is missing, Codex asks for the missing local paths and deploys them with symlinks or environment variables.
+After installation, open a new Codex session and invoke the installed Light-MER skill. Codex will open a six-option Stage 1/2 menu. The preflight checker runs inside the selected workflow; missing resources are requested together and deployed with symlinks or environment variables.
 
 </details>
 
@@ -83,18 +84,18 @@ mkdir -p ~/.claude/skills
 cp -r Light-MER/claude-code/skills/light-mer ~/.claude/skills/
 ```
 
-After installation, invoke the installed Light-MER skill in Claude Code. Claude Code will open a Stage 1 menu for inference, training, or evaluation. The preflight checker runs inside the selected workflow. If anything is missing, Claude Code asks for the missing local paths and deploys them with symlinks or environment variables.
+After installation, invoke the installed Light-MER skill in Claude Code. Claude Code uses the same six-option Stage 1/2 menu and automatic resource checks.
 
 </details>
 
-Status: **Released for Stage 1**. Stage 2 support will be added with the M-GRPO release.
+Status: **Released for Stage 1 and Stage 2**.
 
 ## 🧠 Method Overview
 
-Light-MER compresses a Qwen3-8B multimodal emotion teacher into a Qwen3-0.6B deployable student. This release focuses on Stage 1 SWD-H, which aligns answer-token hidden-state geometry between the teacher and student. Stage 2 M-GRPO will be released after validation.
+Light-MER compresses a Qwen3-8B multimodal emotion teacher into a Qwen3-0.6B deployable student. Stage 1 uses SWD-H to align answer-token hidden-state geometry, while Stage 2 follows the M-GRPO refinement track for more concise and emotion-faithful generation.
 
 <p align="center">
-  <img src="assets/light-mer-model-overview.png" alt="Light-MER model overview showing SWD-H hidden-state distillation." width="96%">
+  <img src="assets/light-mer-model-overview.png" alt="Light-MER model overview showing SWD-H hidden-state distillation and M-GRPO refinement." width="96%">
 </p>
 
 ## 🧩 Model Configuration
@@ -114,6 +115,7 @@ Light-MER keeps the multimodal emotion reasoning pipeline compact: the Qwen3-0.6
 |---|---:|---:|---:|---:|---:|
 | Teacher | 9.00B | 20.04 GB | 10,902.6G | 0.901s | 6.138s |
 | **SWD&#8209;H Student** | **854.93M** | **2.54 GB** | **988.8G (11.0x)** | **0.561s** | **4.621s** |
+| **M&#8209;GRPO Student** | **854.93M** | **2.54 GB** | **988.8G (11.0x)** | **0.523s** | **3.105s** |
 
 Direct and descriptive columns report latency per sample.
 
@@ -134,13 +136,13 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The original Stage 1 experiments used an H100 80GB GPU. Smaller GPUs may require reducing batch size, sequence length, or enabling additional memory optimizations.
+Hardware requirements depend on the selected pretrained models, checkpoint sweep size, batch settings, and local software stack. Adjust training and inference parallelism according to your available GPUs and scheduler policy.
 
 ## 📦 Dataset
 
 ### 📝 MER-Caption+
 
-Stage 1 training uses MER-Caption+ from the MER2025 release:
+Stage 1 distillation and Stage 2 M-GRPO refinement use MER-Caption+ from the MER2025 release:
 
 - Download: [MERChallenge/MER2025](https://huggingface.co/datasets/MERChallenge/MER2025)
 
@@ -214,6 +216,7 @@ models/
 |---|---|---|
 | Light-MER Teacher | Qwen3-8B teacher checkpoint | [Hugging Face](https://huggingface.co/kevin233333/Light-MER/blob/main/light-mer-teacher-qwen3-8b.pth) |
 | Light-MER Stage 1 SWD-H | Qwen3-0.6B student after SWD-H distillation | [Hugging Face](https://huggingface.co/kevin233333/Light-MER/tree/main/stage1-swdh-qwen3-0.6b) |
+| Light-MER Stage 2 M-GRPO | Final student after M-GRPO refinement | |
 
 ## 🚀 Getting Started
 
@@ -239,7 +242,32 @@ TEACHER_CKPT=checkpoints/qwen3_8b_teacher.pth \
 bash scripts/train_stage1_swdh.sh
 ```
 
-### 🔮 3. Run Inference
+### 🧭 3. Refine the Student with Stage 2 M-GRPO
+
+Stage 2 starts from the Stage 1 step-25 checkpoint. The standard Stage 2 run is
+5000 optimizer steps and saves checkpoints 50, 500, 1000, 1500, 2000, 2500,
+3000, 3500, 4000, 4500, and 5000 from the same training trajectory.
+
+```bash
+STAGE1_CKPT=checkpoints/stage1-swdh-qwen3-0.6b/checkpoint_000025_loss_1.549.pth \
+OUTPUT_DIR=output/stage2_mgrpo_qwen3_0_6b \
+CONDA_ENV_NAME=swdh-stage1 \
+bash scripts/train_stage2_mgrpo.sh
+```
+
+Place or symlink the eleven periodic checkpoints into:
+
+```text
+checkpoints/stage2-mgrpo-qwen3-0.6b/
+```
+
+Do not include `checkpoint_final_*` in the sweep directory.
+
+The public config uses the Stage 2 training setting: four completions,
+temperature 0.9, KL coefficient 1.0, learning rate 1e-7, `max_steps=5000`,
+`save_interval=500`, and `save_steps=[50]`.
+
+### 🔮 4. Run Stage 1 Inference
 
 ```bash
 CKPT_ROOT=output/stage1_swdh_qwen3_8b_to_qwen3_0_6b/<run_dir> \
@@ -249,14 +277,53 @@ TEST_EPOCH=60 \
 bash scripts/inference_stage1_swdh.sh
 ```
 
-This runs one task for one model/config, one repeat, and one epoch. The public template does not use a Slurm array by default. To run a local serial sweep, set `TEST_EPOCHS=5-60` and `SKIP_EPOCH=5` explicitly.
+This runs one task for one model/config, one repeat, and one epoch. To run a local serial sweep, set `TEST_EPOCHS=5-60` and `SKIP_EPOCH=5` explicitly.
 
-### 📊 4. Evaluate
+### ⚡ 5. Run Stage 2 Inference
+
+Run the Stage 2 checkpoint sweep with stable Stage 2 naming. Generation
+parameters are explicit command settings and are not encoded into directory or
+run-tag names:
+
+```bash
+STAGE2_CKPT_ROOT=checkpoints/stage2-mgrpo-qwen3-0.6b \
+START_STEP=50 \
+END_STEP=5000 \
+STAGE2_RESULT_ROOT=output_stage2_mgrpo/results \
+RUN_TAG=stage2_mgrpo_qwen3_0_6b \
+TEMPERATURE=0.9 \
+TOP_P=0.9 \
+MERGE_LORA=1 \
+bash scripts/inference_stage2_mgrpo.sh
+```
+
+The public Stage 2 output name follows the same stage/model style as Stage 1:
+`stage2_mgrpo_qwen3_0_6b`.
+
+### 📊 6. Evaluate
+
+Stage 1:
 
 ```bash
 bash scripts/eval_stage1_swdh.sh \
   --base-root output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results
 ```
+
+Stage 2:
+
+```bash
+bash scripts/eval_stage2_mgrpo.sh \
+  --base-root output_stage2_mgrpo/results \
+  --run-tag stage2_mgrpo_qwen3_0_6b
+```
+
+The Stage 2 wrapper follows the original evaluation flow: it first creates any
+missing Qwen label-extraction caches, then summarizes the Emotion Wheel metrics
+for all nine MER-UniBench datasets.
+
+> Security: evaluate only NPZ files generated locally by this repository or
+> obtained from a trusted source. The original result format contains Python
+> objects and therefore requires NumPy pickle loading.
 
 ### 🏁 Expected Results
 
@@ -264,7 +331,8 @@ bash scripts/eval_stage1_swdh.sh \
   <img src="assets/light-mer-main-results.png" alt="Light-MER results on MER-UniBench benchmarks" width="100%">
 </p>
 
-A final variation of ±0.3% is normal because inference uses stochastic decoding.
+Stage 2 inference is stochastic. Small differences of about
+±0.3% are normal when rerunning inference or Qwen label extraction.
 
 ## 🛠️ Path Overrides
 
@@ -275,6 +343,11 @@ export SWDH_MODEL_ROOT=/path/to/models
 export SWDH_DATASET_ROOT=/path/to/dataset
 export SWDH_EMOTION_WHEEL_ROOT=/path/to/emotion_wheel
 export SWDH_RESULT_ROOT=/path/to/results
+export LIGHT_MER_ROOT=/path/to/Light-MER
+export STAGE1_CKPT=/path/to/checkpoint_000025_loss_1.549.pth
+export STAGE2_CKPT_ROOT=/path/to/stage2/checkpoints
+export STAGE2_RESULT_ROOT=/path/to/stage2/results
+export LIGHT_MER_EVAL_SEED=42
 ```
 
 You can override YAML values directly:
