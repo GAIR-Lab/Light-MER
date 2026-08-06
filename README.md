@@ -27,7 +27,7 @@ This repository hosts the Light-MER open-source release, covering Stage 1 SWD-H 
 
 ## 📰 News
 
-- **August 6, 2026**: Stage 2 M-GRPO checkpoints released on [Hugging Face](https://huggingface.co/kevin233333/Light-MER/tree/main/stage2-mgrpo-qwen3-0.6b).
+- **August 6, 2026**: Stage 2 M-GRPO checkpoints released.
 - **August 6, 2026**: Stage 2 M-GRPO training, inference, evaluation, and agent-skill support released.
 - **July 14, 2026**: Stage 1 SWD-H student checkpoints and Stage 1 agent skills released.
 - **July 14, 2026**: README and public config aligned with the Light-MER paper; core model source is included in the release.
@@ -220,7 +220,9 @@ models/
 
 ## 🚀 Getting Started
 
-### 🧑‍🏫 1. Train the Qwen3-8B Teacher
+### 🎓 Stage 1: SWD-H Distillation
+
+#### 1. Train the Qwen3-8B Teacher
 
 Skip this step if you already have a compatible teacher checkpoint.
 
@@ -234,7 +236,7 @@ After selecting the teacher checkpoint, copy or symlink it to:
 checkpoints/qwen3_8b_teacher.pth
 ```
 
-### 🎓 2. Train the Qwen3-0.6B SWD-H Student
+#### 2. Train the Qwen3-0.6B SWD-H Student
 
 ```bash
 CONDA_ENV_NAME=swdh-stage1 \
@@ -242,7 +244,28 @@ TEACHER_CKPT=checkpoints/qwen3_8b_teacher.pth \
 bash scripts/train_stage1_swdh.sh
 ```
 
-### 🧭 3. Train the Stage 2 M-GRPO Student
+#### 3. Run Stage 1 Inference
+
+```bash
+CKPT_ROOT=output/stage1_swdh_qwen3_8b_to_qwen3_0_6b/<run_dir> \
+REPEAT=1 \
+BASE_ROOT=output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results \
+TEST_EPOCH=60 \
+bash scripts/inference_stage1_swdh.sh
+```
+
+This runs one task for one model/config, one repeat, and one epoch. To run a local serial epoch loop, set `TEST_EPOCHS=5-60` and `SKIP_EPOCH=5` explicitly.
+
+#### 4. Evaluate Stage 1
+
+```bash
+bash scripts/eval_stage1_swdh.sh \
+  --base-root output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results
+```
+
+### 🧭 Stage 2: M-GRPO Refinement
+
+#### 1. Train the Stage 2 M-GRPO Student
 
 Train Stage 2 from the Stage 1 SWD-H checkpoint:
 
@@ -259,23 +282,7 @@ To skip training, download or symlink the [released checkpoints](https://hugging
 checkpoints/stage2-mgrpo-qwen3-0.6b/
 ```
 
-### 🔮 4. Run Stage 1 Inference
-
-```bash
-CKPT_ROOT=output/stage1_swdh_qwen3_8b_to_qwen3_0_6b/<run_dir> \
-REPEAT=1 \
-BASE_ROOT=output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results \
-TEST_EPOCH=60 \
-bash scripts/inference_stage1_swdh.sh
-```
-
-This runs one task for one model/config, one repeat, and one epoch. To run a local serial epoch loop, set `TEST_EPOCHS=5-60` and `SKIP_EPOCH=5` explicitly.
-
-### ⚡ 5. Run Stage 2 Inference
-
-Run Stage 2 inference over the released M-GRPO checkpoints with stable Stage 2 naming. Generation
-parameters are explicit command settings and are not encoded into directory or
-run-tag names:
+#### 2. Run Stage 2 Inference
 
 ```bash
 STAGE2_CKPT_ROOT=checkpoints/stage2-mgrpo-qwen3-0.6b \
@@ -289,19 +296,7 @@ MERGE_LORA=1 \
 bash scripts/inference_stage2_mgrpo.sh
 ```
 
-The public Stage 2 output name follows the same stage/model style as Stage 1:
-`stage2_mgrpo_qwen3_0_6b`.
-
-### 📊 6. Evaluate
-
-Stage 1:
-
-```bash
-bash scripts/eval_stage1_swdh.sh \
-  --base-root output_stage1_swdh_qwen3_8b_to_qwen3_0_6b/repeat1/results
-```
-
-Stage 2:
+#### 3. Evaluate Stage 2
 
 ```bash
 bash scripts/eval_stage2_mgrpo.sh \
