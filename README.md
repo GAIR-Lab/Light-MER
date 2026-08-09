@@ -1,4 +1,4 @@
-# Light-MER
+# <img src="assets/lime-icon.png" alt="Light-MER lime icon" width="36"> Light-MER
 
 Official implementation for the paper:
 
