@@ -41,6 +41,7 @@ This repository hosts the Light-MER open-source release, covering Stage 1 SWD-H 
 - [x] Release Codex and Claude Code Stage 1 deployment skills. (Completed on July 14, 2026)
 - [x] Release Stage 2 M-GRPO refinement code and instructions. (Completed on August 6, 2026)
 - [x] Release Stage 2 M-GRPO checkpoints. (Completed on August 6, 2026)
+- [ ] Release online demo.
 
 **If you encounter any questions or discover a bug within the paper or code, please do not hesitate to open an issue or submit a pull request.**
 
