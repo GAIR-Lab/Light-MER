@@ -12,7 +12,7 @@ Official implementation for the paper:
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.10-3776ab?style=flat&logo=python&logoColor=white" alt="Python 3.10"></a>
   <a href="https://huggingface.co/kevin233333/Light-MER"><img src="https://img.shields.io/badge/Hugging%20Face-Checkpoint-ffcc4d?style=flat" alt="Hugging Face checkpoint"></a>
   <a href="https://mp.weixin.qq.com/s/UPHYjmZgFyLggOysvpOOzA"><img src="https://img.shields.io/badge/Blog-%E6%96%B0%E6%99%BA%E5%85%83-07c160?style=flat" alt="Blog 新智元"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-2ea44f?style=flat" alt="Apache License 2.0"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2ea44f?style=flat" alt="MIT License"></a>
 </p>
 
 <p align="center">
@@ -367,7 +367,7 @@ If you find Light-MER useful, please cite our arXiv preprint: [arXiv:2607.12787]
 
 ## 📄 License
 
-This project is released under the [Apache License 2.0](LICENSE). Please also follow the licenses and usage terms of the external datasets, pretrained models, and checkpoints used with this codebase.
+Light-MER's original contributions are released under the [MIT License](LICENSE). Third-party components retain their original licenses; see [Third-Party Notices](THIRD_PARTY_NOTICES.md). Please also follow the licenses and usage terms of the external datasets, pretrained models, and checkpoints used with this codebase.
 
 ## 🙏 Acknowledgement
 
