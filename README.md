@@ -1,6 +1,6 @@
 # <img src="assets/lime-icon.png" alt="Light-MER lime icon" height="34"> Light-MER
 
-Official implementation for the paper:
+Official implementation for the [ACM Multimedia 2026 paper](https://doi.org/10.1145/3767308.3835072):
 
 **Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?**
 
@@ -350,18 +350,19 @@ python -u train.py \
 
 ## 📚 Citation
 
-If you find Light-MER useful, please cite our arXiv preprint: [arXiv:2607.12787](https://arxiv.org/abs/2607.12787).
+If you find Light-MER useful, please cite our [ACM Multimedia 2026 paper](https://doi.org/10.1145/3767308.3835072). The preprint is also available on [arXiv](https://arxiv.org/abs/2607.12787).
 
 ```bibtex
-@misc{zheng2026lightmer,
-  title = {Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?},
+@inproceedings{zheng2026lightmer,
+  title = {Do We Really Need Multimodal Emotion Language Models Larger Than {1B} Parameters?},
   author = {Zheng, Kaiwen and Fu, Junchen and Deng, Wenhao and Han, Hu and Jose, Joemon M. and Ge, Xuri},
+  booktitle = {Proceedings of the 34th ACM International Conference on Multimedia},
+  series = {MM '26},
   year = {2026},
-  eprint = {2607.12787},
-  archivePrefix = {arXiv},
-  primaryClass = {cs.AI},
-  url = {https://arxiv.org/abs/2607.12787},
-  note = {Accepted by ACM MM 2026}
+  pages = {15646--15655},
+  publisher = {Association for Computing Machinery},
+  doi = {10.1145/3767308.3835072},
+  url = {https://doi.org/10.1145/3767308.3835072}
 }
 ```
 
